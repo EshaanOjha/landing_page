@@ -2004,10 +2004,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     ctx.save();
     ctx.font = &#x27;400 10px &quot;JetBrains Mono&quot;, monospace&#x27;;
     ctx.textBaseline = &#x27;alphabetic&#x27;; ctx.textAlign = &#x27;left&#x27;;
-    ctx.fillStyle = &#x27;#85cbd4&#x27;; ctx.globalAlpha = 0.75;
-    ctx.fillRect(pad, y - 4, 16, 1);
-    ctx.fillStyle = &#x27;#879198&#x27;;
-    drawTracked(&#x27;EO / PORTFOLIO&#x27;, pad + 25, y, 0.65);
+    ctx.globalAlpha = 0.75;
     // These are the globe&#x27;s live viewing coordinates, not a personal location.
     const lon = ((longitude + 540) % 360) - 180;
     const view = `12.0°N / ${Math.abs(lon).toFixed(1)}°${lon &lt; 0 ? &#x27;W&#x27; : &#x27;E&#x27;}`;
@@ -2738,8 +2735,8 @@ html&gt;body{padding:0}&lt;/style&gt;
 
 &lt;style id=&quot;portfolio-navigation-style&quot;&gt;
 #portfolio-hero{position:fixed;inset:0;overflow:hidden;--nav-fg:#f5f7f8;--nav-dim:rgba(220,232,235,.53);--nav-accent:#8dd7e2}
-#portfolio-stage{position:absolute;inset:0;transform-origin:var(--ox,50%) var(--oy,50%);transition:transform .8s cubic-bezier(.22,1,.36,1),transform-origin .8s cubic-bezier(.22,1,.36,1);will-change:transform}
-#portfolio-hero[data-active] #portfolio-stage{transform:scale(1.08)}
+#portfolio-stage{position:absolute;inset:0}
+
 #portfolio-zones{position:absolute;inset:0;z-index:10;pointer-events:none}
 .portfolio-zone{position:absolute;inset:0;display:block;pointer-events:auto;-webkit-tap-highlight-color:transparent;color:var(--nav-fg);text-decoration:none}
 .portfolio-zone:focus-visible{outline:2px solid var(--nav-accent);outline-offset:-3px}
@@ -2794,7 +2791,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     const next = hovered || focused;
     if (next) {
       hero.dataset.active = next.id;
-      hero.style.setProperty(&#x27;--ox&#x27;,next.origin[0]+&#x27;%&#x27;);hero.style.setProperty(&#x27;--oy&#x27;,next.origin[1]+&#x27;%&#x27;);
+
     } else delete hero.dataset.active;
     for (const entry of entries) {
       const on = next?.id === entry.zone.id;

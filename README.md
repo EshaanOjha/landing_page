@@ -63,7 +63,7 @@ Smaller centers render first; major centers retain the urban-cluster context. Ei
 
 ## Horizon name
 
-“Eshaan” uses Space Grotesk Bold with tight tracking; “Ojha” uses Light with slightly wider tracking. JetBrains Mono supplies the dim `CS Student · Security · Full-Stack` subtitle, a small portfolio label, and live globe viewing coordinates. A small cyan rule and a faint blue-white atmospheric rim are the only colored accents. The former background haze is removed; the name has a restrained wide glow.
+“Eshaan” uses Space Grotesk Bold with tight tracking; “Ojha” uses Light with slightly wider tracking. JetBrains Mono supplies the dim `CS Student · Security · Full-Stack` subtitle, live globe viewing coordinates. A faint blue-white atmospheric rim supplies the restrained color accent. The former background haze is removed; the name has a restrained wide glow.
 
 The curved globe still masks the bottom of the name during a 2.4-second rising entrance. Text is measured to fit the viewport, and reduced-motion preferences show the final position immediately. Both fonts are embedded, so no external font requests are needed; their SIL Open Font Licenses are included in `licenses/`.
 
@@ -73,8 +73,8 @@ After the 2.4-second rising entrance, the name gently floats vertically on a 6.2
 
 ## Portfolio navigation zones
 
-Adapted from the supplied `zones.html` and annotated screenshot: Projects 01 (left of the name), About 02 (upper left), Writeups 03 (upper center), Get in Touch 04 (right). The hero's center remains outside the polygon hit areas. Hover or keyboard focus highlights the active label/border and gently zooms the scene from that zone's origin; the actual hit targets stay untransformed to prevent flicker. Pointer exits use a 100 ms grace period.
+Adapted from the supplied `zones.html` and annotated screenshot: Projects 01 (left of the name), About 02 (upper left), Writeups 03 (upper center), Get in Touch 04 (right). The hero's center remains outside the polygon hit areas. Hover or keyboard focus highlights the active label/border without scaling or transforming the scene. The top-left portfolio label and rule are omitted. Pointer exits use a 100 ms grace period.
 
-Below 761 px wide or 521 px tall, navigation becomes compact, keyboard-accessible buttons. Touch taps activate anchors directly. Reduced-motion mode disables the zoom and transitions. The existing name float, globe rotation, typography, sandbox and CSP remain intact.
+Below 761 px wide or 521 px tall, navigation becomes compact, keyboard-accessible buttons. Touch taps activate anchors directly. Reduced-motion mode disables navigation transitions. The existing name float, globe rotation, typography, sandbox and CSP remain intact.
 
 Links are deliberately retained as `#projects`, `#about`, `#writeups`, and `#contact` anchors for future sections, as requested. No section content or contact information is invented. Because navigation lives inside the sandboxed visualization, these hashes belong to its document; add the destination sections inside that same document when ready. The current anchor is reflected by `aria-current="location"`.
