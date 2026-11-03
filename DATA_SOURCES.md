@@ -44,3 +44,13 @@ Attribution and upstream license information: https://github.com/tilezen/joerd/b
 * United States 3DEP (formerly NED) and global GMTED2010 and SRTM terrain data
   courtesy of the U.S. Geological Survey.
 
+
+## Urban footprints and lakes
+
+Natural Earth 1:50m public-domain data, accessed 2026-11-03:
+- Urban areas: https://www.naturalearthdata.com/downloads/50m-cultural-vectors/50m-urban-areas/ (`ne_50m_urban_areas.geojson`). These generalized footprints derive from 2002–2003 MODIS imagery; they do not represent current urban extents.
+- Lakes: https://www.naturalearthdata.com/downloads/50m-physical-vectors/ (`ne_50m_lakes.geojson`), restricted to `featurecla = Lake` and scale rank ≤ 2.
+
+Urban points are deterministic Halton samples constrained to polygon exteriors and excluding holes. Counts are proportional to source `area_sqkm` (one sample per approximately 15 km², clamped to 4–120 per area). They are decorative samples of known urban footprints, not building coordinates, population observations, or night-light measurements. All 45,780 rounded points were checked against their source footprints.
+
+Lake polygon winding is normalized for D3 spherical rendering; holes are preserved. Lake geometry is drawn independently of the coarse land mask so inland-water holes in the original country topology still receive shorelines.

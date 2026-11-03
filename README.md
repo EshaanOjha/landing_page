@@ -40,3 +40,9 @@ A faint white atmosphere follows the horizon. Twenty-eight deterministic stars r
 Terrain uses sparse, smoothed elevation contours at 1,500, 3,000, and 4,500 metres with 13% opacity. Disputed, control, indefinite, frontier, and claim boundaries use 3 px white dashes separated by 3 px gaps. Ordinary political borders are drawn separately, rather than underneath disputed sections.
 
 See [DATA_SOURCES.md](DATA_SOURCES.md) for map sources, classification scope, terrain attribution, and resolution limits. All new geometry is embedded, with no runtime requests.
+
+## Urban clusters and lakes
+
+Urban clusters use 45,780 stable white points at 0.62 px radius and 48% opacity. They are sampled inside 2,143 published urban-area footprints; larger footprints receive more points, with a cap of 120 per area. Existing brighter city centers and subtle pulses remain. These samples represent urban shapes, not individual buildings or measured population density.
+
+The 280 priority lake polygons use dark interiors and 0.65 px white shorelines at 46% opacity. Water masks underlying terrain, river centerlines, and urban samples. Both layers rotate and clip with the globe and retain the reduced-motion behavior.
