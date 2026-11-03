@@ -2128,7 +2128,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     if (previous !== undefined &amp;&amp; !document.hidden &amp;&amp; !reduced.matches) {
       const delta = Math.min(now - previous, 80);
       elapsed += delta;
-      longitude = (longitude + delta * 0.00175) % 360;
+      longitude = (longitude + delta * 0.001225) % 360;
       draw();
     }
     previous = now;

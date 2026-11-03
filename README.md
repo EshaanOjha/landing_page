@@ -25,7 +25,7 @@ Keep the canvas circle and map projection aligned when changing the horizon posi
 
 ## Opening view and motion
 
-The opening view is centered at 73° E, toward western India. Rotation runs at 1.75° per second, 30% slower than the original 2.5° per second.
+The opening view is centered at 73° E, toward western India. Rotation runs at 1.225° per second, 30% slower than the previous 1.75° per second. Name floating and city pulse timings are independent of this speed.
 
 ## Rivers and coastlines
 
