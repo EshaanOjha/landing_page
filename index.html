@@ -1965,7 +1965,16 @@ html&gt;body{padding:0}&lt;/style&gt;
     fontSize *= Math.min(1, width * 0.80 / metrics.total);
     metrics = measureName();
     const startX = (width - metrics.total) / 2;
-    const baseline = horizon + fontSize * (0.38 - 0.18 * rise);
+    const riseBaseline = horizon + fontSize * (0.38 - 0.18 * rise);
+    // Start floating only after the entrance; ease in from zero displacement
+    // and velocity so the handoff never jumps. Keep the subtitle anchored.
+    const floatTime = Math.max(0, elapsed - 2400);
+    const floatProgress = Math.min(floatTime / 1800, 1);
+    const floatEase = floatProgress * floatProgress * (3 - 2 * floatProgress);
+    const floatAmplitude = Math.min(7, Math.max(2, fontSize * 0.045));
+    const floatOffset = reduced.matches ? 0
+      : -Math.sin(floatTime / 6200 * Math.PI * 2) * floatAmplitude * floatEase;
+    const baseline = riseBaseline + floatOffset;
     ctx.fillStyle = &#x27;#f5f7f8&#x27;;
     ctx.shadowColor = &#x27;rgba(255,255,255,0.10)&#x27;;
     ctx.shadowBlur = 32;
@@ -1980,7 +1989,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     const baseWidth = trackedWidth(subtitle, 0);
     tracking = Math.max(0, Math.min(tracking, (width * 0.9 - baseWidth) / (subtitle.length - 1)));
     ctx.fillStyle = &#x27;#8b949b&#x27;;
-    drawTracked(subtitle, (width - trackedWidth(subtitle, tracking)) / 2, baseline - fontSize * 0.82 - 24, tracking);
+    drawTracked(subtitle, (width - trackedWidth(subtitle, tracking)) / 2, riseBaseline - fontSize * 0.82 - 24, tracking);
     ctx.restore();
   }
   function drawCornerDetails() {

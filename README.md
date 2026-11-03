@@ -66,3 +66,7 @@ Smaller centers render first; major centers retain the urban-cluster context. Ei
 “Eshaan” uses Space Grotesk Bold with tight tracking; “Ojha” uses Light with slightly wider tracking. JetBrains Mono supplies the dim `CS Student · Security · Full-Stack` subtitle, a small portfolio label, and live globe viewing coordinates. A small cyan rule and a faint blue-white atmospheric rim are the only colored accents. The former background haze is removed; the name has a restrained wide glow.
 
 The curved globe still masks the bottom of the name during a 2.4-second rising entrance. Text is measured to fit the viewport, and reduced-motion preferences show the final position immediately. Both fonts are embedded, so no external font requests are needed; their SIL Open Font Licenses are included in `licenses/`.
+
+## Floating name
+
+After the 2.4-second rising entrance, the name gently floats vertically on a 6.2-second cycle. The motion eases in over 1.8 seconds and scales from 2 to 7 px with the typography. The subtitle stays anchored, and the globe continues to mask the lower edge of the name. Reduced-motion mode disables both the entrance and floating motion, showing the resting position immediately.
