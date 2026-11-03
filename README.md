@@ -63,4 +63,6 @@ Smaller centers render first; major centers retain the urban-cluster context. Ei
 
 ## Horizon name
 
-Bold “Eshaan Ojha” sits centered behind the globe's curved horizon. The opaque globe masks the bottom of the text, with most of the name remaining visible. A soft white glow and a gentle 2.4-second upward entrance create the rising-sun effect. The measured text width is capped at 78% of the viewport, using local system fonts without new network requests. Reduced-motion preferences display the final position immediately.
+“Eshaan” uses Space Grotesk Bold with tight tracking; “Ojha” uses Light with slightly wider tracking. JetBrains Mono supplies the dim `CS Student · Security · Full-Stack` subtitle, a small portfolio label, and live globe viewing coordinates. A small cyan rule and a faint blue-white atmospheric rim are the only colored accents. The former background haze is removed; the name has a restrained wide glow.
+
+The curved globe still masks the bottom of the name during a 2.4-second rising entrance. Text is measured to fit the viewport, and reduced-motion preferences show the final position immediately. Both fonts are embedded, so no external font requests are needed; their SIL Open Font Licenses are included in `licenses/`.
