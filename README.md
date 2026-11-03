@@ -60,3 +60,7 @@ City sizes use Natural Earth's historical `POP_MAX` estimates:
 | Major | At least 5 million | 1.9 px | 100% |
 
 Smaller centers render first; major centers retain the urban-cluster context. Eight selected major centers pulse subtly. No labels, halos, or regional dashes are added.
+
+## Horizon name
+
+Bold “Eshaan Ojha” sits centered behind the globe's curved horizon. The opaque globe masks the bottom of the text, with most of the name remaining visible. A soft white glow and a gentle 2.4-second upward entrance create the rising-sun effect. The measured text width is capped at 78% of the viewport, using local system fonts without new network requests. Reduced-motion preferences display the final position immediately.

@@ -1887,7 +1887,7 @@ html&gt;body{padding:0}&lt;/style&gt;
 
 
 &lt;div id=&quot;orbital-globe&quot; style=&quot;width:100%;height:640px;position:relative;overflow:hidden;background:#000&quot;&gt;
-&lt;canvas role=&quot;img&quot; aria-label=&quot;Slowly revolving Earth from low orbit, with white country borders, dashed disputed boundaries, coastlines, rivers, lake shorelines, foreground-weighted terrain contours, regional boundaries, urban clusters, three sizes of city points, a faint atmosphere, and sparse stars&quot; style=&quot;display:block;width:100%;height:100%&quot;&gt;&lt;/canvas&gt;
+&lt;canvas role=&quot;img&quot; aria-label=&quot;Bold Eshaan Ojha rising behind the horizon of a slowly revolving Earth from low orbit, with white country borders, dashed disputed boundaries, coastlines, rivers, lake shorelines, foreground-weighted terrain contours, regional boundaries, urban clusters, three sizes of city points, a faint atmosphere, and sparse stars&quot; style=&quot;display:block;width:100%;height:100%&quot;&gt;&lt;/canvas&gt;
 &lt;/div&gt;
 &lt;script&gt;
 // https://d3js.org v7.9.0 Copyright 2010-2023 Mike Bostock
@@ -1935,6 +1935,40 @@ html&gt;body{padding:0}&lt;/style&gt;
   const pulseCities = [[73,19],[77,29],[139,36],[-74,41],[0,51],[-46,-24],[31,30],[151,-34]]
     .map(target =&gt; majorCities.reduce((best, city) =&gt; d3.geoDistance(city, target) &lt; d3.geoDistance(best, target) ? city : best));
   const pulsePath = d3.geoPath(projection, ctx);
+  function drawHorizonName() {
+    const label = &#x27;Eshaan Ojha&#x27;;
+    const horizon = height * 0.45;
+    const progress = reduced.matches ? 1 : Math.min(elapsed / 2400, 1);
+    const rise = progress * progress * (3 - 2 * progress);
+    ctx.save();
+    let fontSize = Math.min(180, Math.max(42, width * 0.105));
+    const setFont = () =&gt; { ctx.font = `900 ${fontSize}px &quot;Arial Black&quot;, &quot;Helvetica Neue&quot;, Arial, sans-serif`; };
+    setFont();
+    // Measure instead of assuming glyph widths, including on narrow screens.
+    fontSize *= Math.min(1, width * 0.78 / ctx.measureText(label).width);
+    setFont();
+    const textWidth = ctx.measureText(label).width;
+    const baseline = horizon + fontSize * (0.38 - 0.18 * rise);
+    // A restrained, monochrome dawn glow stays behind the globe and the name.
+    ctx.save();
+    ctx.translate(width / 2, horizon + fontSize * 0.12);
+    ctx.scale(1, 0.28);
+    const glowRadius = textWidth * 0.7;
+    const glow = ctx.createRadialGradient(0, 0, 0, 0, 0, glowRadius);
+    glow.addColorStop(0, &#x27;rgba(255,255,255,0.10)&#x27;);
+    glow.addColorStop(0.45, &#x27;rgba(255,255,255,0.035)&#x27;);
+    glow.addColorStop(1, &#x27;rgba(255,255,255,0)&#x27;);
+    ctx.fillStyle = glow;
+    ctx.fillRect(-glowRadius, -glowRadius, glowRadius * 2, glowRadius * 2);
+    ctx.restore();
+    ctx.textAlign = &#x27;center&#x27;;
+    ctx.textBaseline = &#x27;alphabetic&#x27;;
+    ctx.fillStyle = &#x27;#fff&#x27;;
+    ctx.shadowColor = &#x27;rgba(255,255,255,0.24)&#x27;;
+    ctx.shadowBlur = Math.min(18, fontSize * 0.16);
+    ctx.fillText(label, width / 2, baseline);
+    ctx.restore();
+  }
   function draw() {
     ctx.clearRect(0, 0, width, height);
     projection.rotate([-longitude, -12, -12]);
@@ -1945,6 +1979,8 @@ html&gt;body{padding:0}&lt;/style&gt;
       ctx.beginPath(); ctx.arc(x * width, y * height, size, 0, Math.PI * 2); ctx.fill();
     }
     ctx.restore();
+    // Paint the name behind the opaque sphere for true curved-horizon occlusion.
+    drawHorizonName();
     // Draw the soft outer atmosphere first; the opaque globe covers its inner glow.
     ctx.save();
     ctx.globalAlpha = 0.18;
