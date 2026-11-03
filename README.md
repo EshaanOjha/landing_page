@@ -70,3 +70,11 @@ The curved globe still masks the bottom of the name during a 2.4-second rising e
 ## Floating name
 
 After the 2.4-second rising entrance, the name gently floats vertically on a 6.2-second cycle. The motion eases in over 1.8 seconds and scales from 2 to 7 px with the typography. The subtitle stays anchored, and the globe continues to mask the lower edge of the name. Reduced-motion mode disables both the entrance and floating motion, showing the resting position immediately.
+
+## Portfolio navigation zones
+
+Adapted from the supplied `zones.html` and annotated screenshot: Projects 01 (left of the name), About 02 (upper left), Writeups 03 (upper center), Get in Touch 04 (right). The hero's center remains outside the polygon hit areas. Hover or keyboard focus highlights the active label/border and gently zooms the scene from that zone's origin; the actual hit targets stay untransformed to prevent flicker. Pointer exits use a 100 ms grace period.
+
+Below 761 px wide or 521 px tall, navigation becomes compact, keyboard-accessible buttons. Touch taps activate anchors directly. Reduced-motion mode disables the zoom and transitions. The existing name float, globe rotation, typography, sandbox and CSP remain intact.
+
+Links are deliberately retained as `#projects`, `#about`, `#writeups`, and `#contact` anchors for future sections, as requested. No section content or contact information is invented. Because navigation lives inside the sandboxed visualization, these hashes belong to its document; add the destination sections inside that same document when ready. The current anchor is reflected by `aria-current="location"`.
