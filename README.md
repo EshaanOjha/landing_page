@@ -63,7 +63,7 @@ Smaller centers render first; major centers retain the urban-cluster context. Ei
 
 ## Horizon name
 
-“Eshaan” uses Space Grotesk Bold with tight tracking; “Ojha” uses Light with slightly wider tracking. JetBrains Mono supplies the dim `CS Student · Security · Full-Stack` subtitle, live globe viewing coordinates. A faint blue-white atmospheric rim supplies the restrained color accent. The former background haze is removed; the name has a restrained wide glow.
+“Eshaan” uses Space Grotesk Bold with tight tracking; “Ojha” uses Light with slightly wider tracking. JetBrains Mono supplies the dim `Networking - Security - Backend Development` subtitle, live globe viewing coordinates. A faint blue-white atmospheric rim supplies the restrained color accent. The former background haze is removed; the name has a restrained wide glow.
 
 The curved globe still masks the bottom of the name during a 2.4-second rising entrance. Text is measured to fit the viewport, and reduced-motion preferences show the final position immediately. Both fonts are embedded, so no external font requests are needed; their SIL Open Font Licenses are included in `licenses/`.
 
