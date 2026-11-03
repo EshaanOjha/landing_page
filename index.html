@@ -1913,7 +1913,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     .clipAngle(Math.acos(1 / distance) * 180 / Math.PI - 0.001).precision(0.35);
   const path = d3.geoPath(projection, ctx);
   const reduced = matchMedia(&#x27;(prefers-reduced-motion: reduce)&#x27;);
-  let width, height, radius, longitude = 8, previous;
+  let width, height, radius, longitude = 73, previous;
   function draw() {
     ctx.clearRect(0, 0, width, height);
     projection.rotate([-longitude, -12, -12]);
@@ -1943,7 +1943,7 @@ html&gt;body{padding:0}&lt;/style&gt;
   new ResizeObserver(resize).observe(root);
   function animate(now) {
     if (previous !== undefined &amp;&amp; !document.hidden &amp;&amp; !reduced.matches) {
-      longitude = (longitude + Math.min(now - previous, 80) * 0.0025) % 360;
+      longitude = (longitude + Math.min(now - previous, 80) * 0.00175) % 360;
       draw();
     }
     previous = now;

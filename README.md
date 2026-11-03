@@ -22,3 +22,7 @@ The visualization is embedded in the iframe's HTML-escaped `data-srcdoc` attribu
 - Globe radius: `Math.max(width * 1.30, height * 0.70)`
 
 Keep the canvas circle and map projection aligned when changing the horizon position.
+
+## Opening view and motion
+
+The opening view is centered at 73° E, toward western India. Rotation runs at 1.75° per second, 30% slower than the original 2.5° per second.
