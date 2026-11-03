@@ -32,3 +32,11 @@ The opening view is centered at 73° E, toward western India. Rotation runs at 1
 Major rivers use thin white strokes at 32% opacity, clipped to the visible land. Coastlines use 1 px strokes at 95% opacity; inland political borders use 0.8 px strokes at 70% opacity. Cities remain solid white points.
 
 River geometry comes from Natural Earth's public-domain [1:50m rivers and lake centerlines](https://www.naturalearthdata.com/downloads/50m-physical-vectors/50m-rivers-lake-centerlines/), restricted to scale ranks 1–3. Coastlines and the land mask come from the existing country topology. All geometry remains embedded; no runtime data requests are needed.
+
+## Finishing details
+
+A faint white atmosphere follows the horizon. Twenty-eight deterministic stars remain static above the globe. Eight existing city points pulse gently over six seconds without rings. Reduced-motion preferences disable rotation and pulses.
+
+Terrain uses sparse, smoothed elevation contours at 1,500, 3,000, and 4,500 metres with 13% opacity. Disputed, control, indefinite, frontier, and claim boundaries use 3 px white dashes separated by 3 px gaps. Ordinary political borders are drawn separately, rather than underneath disputed sections.
+
+See [DATA_SOURCES.md](DATA_SOURCES.md) for map sources, classification scope, terrain attribution, and resolution limits. All new geometry is embedded, with no runtime requests.
