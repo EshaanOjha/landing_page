@@ -16,7 +16,7 @@ The existing 1:110m country topology supplies coastlines and the land mask. Rive
 
 ## Terrain
 
-Terrain Tiles accessed 2026-11-03 from https://registry.opendata.aws/terrain-tiles/. Sixteen zoom-2 Terrarium tiles were decoded using `(red * 256 + green + blue / 256) - 32768`. The 1,024 × 1,024 Web Mercator elevation mosaic was smoothed with three five-neighbor passes, then contoured at 1,500, 3,000 and 4,500 metres. Tiny loops were omitted; coordinates were rounded to four decimal places. These are coarse decorative terrain contours, not navigational or survey data.
+Terrain Tiles accessed 2026-11-03 from https://registry.opendata.aws/terrain-tiles/. Sixteen zoom-2 Terrarium tiles were decoded using `(red * 256 + green + blue / 256) - 32768`. The 1,024 × 1,024 Web Mercator elevation mosaic was smoothed with three five-neighbor passes, then contoured at 1,000, 1,500, 2,000, 2,500, 3,000, 4,000 and 5,000 metres. Tiny loops were omitted; coordinates were rounded to four decimal places. These are coarse decorative terrain contours, not navigational or survey data.
 
 Encoding: https://github.com/tilezen/joerd/blob/master/docs/formats.md
 
@@ -54,3 +54,11 @@ Natural Earth 1:50m public-domain data, accessed 2026-11-03:
 Urban points are deterministic Halton samples constrained to polygon exteriors and excluding holes. Counts are proportional to source `area_sqkm` (one sample per approximately 15 km², clamped to 4–120 per area). They are decorative samples of known urban footprints, not building coordinates, population observations, or night-light measurements. All 45,780 rounded points were checked against their source footprints.
 
 Lake polygon winding is normalized for D3 spherical rendering; holes are preserved. Lake geometry is drawn independently of the coarse land mask so inland-water holes in the original country topology still receive shorelines.
+
+## Regional borders and population hierarchy
+
+Accessed 2026-11-03 from https://github.com/nvkelso/natural-earth-vector/tree/master/geojson :
+- `ne_50m_admin_1_states_provinces_lines.geojson`: 581 admin-1 line features across AUS, BRA, CAN, CHN, IND, IDN, RUS, ZAF and USA. Only published admin-1 boundary lines are used; no artificial divisions are generated for other countries. See https://www.naturalearthdata.com/downloads/50m-cultural-vectors/50m-admin-1-states-provinces/ .
+- `ne_50m_populated_places.geojson`: city centers and `POP_MAX` estimates, with `ADM0CAP` retaining smaller national capitals. Tier cutoffs are 100,000, 1 million and 5 million; these are design thresholds, not official classifications. Values are historical dataset estimates, not current census figures. See https://www.naturalearthdata.com/downloads/50m-cultural-vectors/50m-populated-places/ .
+
+The expanded terrain layer has 174 coarse elevation contours. A screen-space opacity gradient makes them clearer in the foreground and less prominent along the horizon; it does not change elevation geometry.
