@@ -1,0 +1,61 @@
+.projects-intro { padding: 84px 0 0; }
+.projects-intro h1 { margin: 30px 0; font-size: clamp(40px, 5.8vw, 86px); line-height: 1.12; letter-spacing: -.055em; font-weight: 300; }
+.projects-intro h1 strong, .projects-intro h1 span { display: block; }
+.projects-intro h1 span { color: var(--muted); }
+.projects-intro > p:last-of-type { max-width: 580px; color: var(--muted); font-size: 18px; line-height: 1.8; }
+.project-index { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 58px; border-top: 1px solid var(--line); }
+.project-index a { display: flex; gap: 16px; padding: 23px 16px 23px 0; align-items: center; font-size: 14px; }
+.project-index a span { font: 10px 'JetBrains Mono', monospace; color: var(--accent); }
+.project-index a span:last-child { margin-left: auto; padding-right: 20px; font-size: 18px; }
+.project-entry { padding: 70px 0 80px; border-top: 1px solid var(--line); scroll-margin-top: 24px; }
+.project-heading { display: flex; align-items: center; gap: 24px; }
+.project-number { font: 12px 'JetBrains Mono', monospace; color: var(--accent); align-self: flex-start; padding-top: 8px; }
+.project-heading .eyebrow { margin: 0 0 12px; font-size: 10px; }
+.project-heading h2 { font-size: clamp(30px, 3.5vw, 48px); letter-spacing: -.04em; margin: 0; }
+.project-source { margin-left: auto; font: 11px 'JetBrains Mono', monospace; white-space: nowrap; border-bottom: 1px solid #4c5457; padding-bottom: 9px; }
+.project-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; margin: 34px 0; }
+.project-summary h3 { font-size: clamp(23px, 2.6vw, 35px); line-height: 1.35; font-weight: 400; letter-spacing: -.03em; margin: 0; max-width: 470px; }
+.project-summary p, .project-story p, .engineering-grid p { color: var(--muted); line-height: 1.8; font-size: 16px; margin: 0; }
+.project-visual { margin: 36px 0; border: 1px solid #303639; background: #0c0f10; }
+.project-visual img { display: block; width: 100%; max-height: 650px; object-fit: contain; }
+.project-diagram { padding: 30px 40px; background-image: linear-gradient(#ffffff03 1px, transparent 1px), linear-gradient(90deg, #ffffff03 1px, transparent 1px); background-size: 32px 32px; }
+.diagram-top, .diagram-bottom, .project-visual figcaption { font: 10px/1.6 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: .13em; color: #91a3aa; display: flex; align-items: center; gap: 12px; }
+.diagram-top { justify-content: space-between; }
+.diagram-flow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 70px; max-width: 850px; margin: 50px auto; }
+.diagram-node { position: relative; padding: 28px 18px 25px; border: 1px solid #43545b; background: #101719; min-width: 0; }
+.diagram-node:not(:last-child)::after { content: '→'; position: absolute; left: 100%; top: 50%; width: 70px; text-align: center; color: #8dd7e2; font-size: 24px; transform: translateY(-50%); }
+.node-symbol { display: block; font-size: 40px; font-weight: 300; line-height: 1; color: var(--accent); margin-bottom: 24px; }
+.node-step { position: absolute; right: 14px; top: 15px; font: 9px 'JetBrains Mono', monospace; color: #7b8c93; }
+.diagram-node strong { font-size: 16px; font-weight: 400; }
+.signal-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+.diagram-rule { flex: 1; height: 1px; background: #2c3c42; margin-left: 14px; }
+.project-visual figcaption { padding: 14px 22px; border-top: 1px solid #303639; font-size: 9px; justify-content: space-between; color: #818e94; }
+.visual-nearcast { background: #0d0e11; }.visual-nearcast .diagram-node { background: #12151d; border-color: #414d68; }
+.visual-warehouse-manager .diagram-node { background: #151712; border-color: #4b5440; }
+.project-story { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; }
+.project-story h3 { margin: 0 0 16px; color: #d2d8db; }
+.project-tags { margin: 28px 0; }
+.project-details { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.project-details summary { display: flex; justify-content: space-between; cursor: pointer; padding: 22px 0; font: 11px 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: .12em; list-style: none; }
+.project-details summary::-webkit-details-marker { display: none; }
+.project-details summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
+.project-details summary:hover { color: var(--accent); }
+.details-mark { font-size: 20px; line-height: 12px; color: var(--accent); }
+.project-details[open] .details-mark { transform: rotate(45deg); }
+.engineering-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; padding: 10px 0 24px; }
+.engineering-grid h4 { font-size: 18px; font-weight: 500; line-height: 1.5; margin: 0 0 14px; }
+.engineering-grid p { font-size: 14px; }
+.project-details > a { display: inline-block; margin-bottom: 24px; font-size: 13px; }
+.projects-outro { border-top: 1px solid var(--line); padding: 64px 0 80px; }.projects-outro h2 { font-size: clamp(30px, 4vw, 56px); letter-spacing: -.04em; font-weight: 500; line-height: 1.25; }.projects-outro h2 span { color: var(--muted); font-weight: 300; }.projects-outro > a { display: inline-block; margin-right: 32px; font-size: 14px; color: var(--accent); }
+.projects-header nav a[aria-current] { color: var(--accent); }
+@media(max-width:760px) {
+  .projects-header nav a:first-child { display: block; }
+  .projects-intro { padding-top: 48px; }.projects-intro h1 { font-size: clamp(36px, 8vw, 55px); }.projects-intro > p:last-of-type { font-size: 16px; }
+  .project-index { grid-template-columns: 1fr; margin-top: 34px; }.project-index a { border-bottom: 1px solid var(--line); padding: 18px 0; }
+  .project-entry { padding: 42px 0 48px; }.project-heading { flex-wrap: wrap; gap: 14px; }.project-heading h2 { font-size: 30px; }.project-heading .eyebrow { font-size: 8px; }.project-source { margin-left: 34px; }
+  .project-summary, .project-story, .engineering-grid { grid-template-columns: 1fr; gap: 24px; }.project-summary { margin: 26px 0; }
+  .project-diagram { padding: 20px; }.diagram-flow { grid-template-columns: 1fr; gap: 28px; margin: 28px auto; max-width: 240px; }.diagram-node { padding: 17px; }.node-symbol { display: inline-block; font-size: 27px; margin: 0 14px 0 0; vertical-align: middle; }.diagram-node strong { font-size: 13px; }.node-step { font-size: 8px; top: 6px; right: 8px; }
+  .diagram-node:not(:last-child)::after { content: '↓'; top: 100%; left: 50%; transform: translateX(-50%); height: 28px; line-height: 28px; font-size: 18px; }
+  .diagram-top,.diagram-bottom { font-size: 8px; }.project-visual figcaption { font-size: 8px; padding: 12px; }.project-visual figcaption span { display: none; }.project-summary h3 { font-size: 25px; }.projects-outro { padding: 44px 0; }
+}
+.projects-intro h1 strong { font-weight: 700; }

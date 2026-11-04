@@ -1,3 +1,4 @@
+import Projects from './pages/Projects.jsx';
 import About from './pages/About.jsx';
 import Globe from './components/Globe.jsx';
 import Navigation from './components/Navigation.jsx';
@@ -20,5 +21,7 @@ function Home() {
 }
 
 export default function App() {
-  return window.location.pathname.replace(/\/$/, "") === "/about" ? <About /> : <Home />;
+  const path = window.location.pathname.replace(/\/$/, "");
+  if (path === "/projects") return <Projects />;
+  return path === "/about" ? <About /> : <Home />;
 }
