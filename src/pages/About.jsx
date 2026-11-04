@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { about } from '../content/about.js';
+import { certificates } from '../content/certificates.js';
 import '../styles/about.css';
 
 function Section({ id, label, children }) {
@@ -13,13 +14,17 @@ export default function About() {
   useEffect(() => {
     const previousTitle = document.title;
     document.title = 'About — Eshaan Ojha';
-    return () => { document.title = previousTitle; };
+    const frame = requestAnimationFrame(() => {
+      const id = window.location.hash.slice(1);
+      if (id) document.getElementById(id)?.scrollIntoView({ behavior: 'instant' });
+    });
+    return () => { cancelAnimationFrame(frame); document.title = previousTitle; };
   }, []);
   return <div className="about-page">
     <a className="about-skip" href="#about-content">Skip to content</a>
     <header className="about-header">
       <a className="back-link" href="/">← Back to globe</a>
-      <nav aria-label="About page"><a href="#focus">Focus</a><a href="#currently">Currently</a><a href="/contact">Contact</a></nav>
+      <nav aria-label="About page"><a href="#focus">Focus</a><a href="#certificates">Certificates</a><a href="/contact">Contact</a></nav>
     </header>
     <main id="about-content">
       <section className="about-intro" aria-labelledby="about-heading">
@@ -53,6 +58,23 @@ export default function About() {
         {about.milestones.map(item => <article key={item.label}><p className="eyebrow">{item.label}</p><h3>{item.title}</h3><p>{item.text}</p></article>)}
       </div></Section>
 
+      <Section id="certificates" label="Certificates & learning">
+        <div className="certificate-grid">{certificates.map(certificate => <article className="certificate-card" key={certificate.id}>
+          <a className="certificate-preview" href={certificate.pdf} target="_blank" rel="noreferrer" aria-label={`View ${certificate.title} certificate PDF (opens in new tab)`}>
+            <img src={certificate.image} alt={`${certificate.title} completion certificate awarded to Eshaan Krishna Ojha`} loading="lazy" width="900" height={certificate.id === 'cs50x' ? 696 : 547} />
+          </a>
+          <div className="certificate-copy">
+            <p className="eyebrow">{certificate.issuer}</p>
+            <h3>{certificate.title}</h3>
+            <p className="certificate-date">Completed <time dateTime={certificate.dateTime}>{certificate.date}</time></p>
+            <p>{certificate.description}</p>
+            <div className="certificate-actions">
+              <a href={certificate.pdf} target="_blank" rel="noreferrer" aria-label={`View ${certificate.title} PDF (opens in new tab)`}>View certificate ↗</a>
+              <a href={certificate.verification} target="_blank" rel="noreferrer" aria-label={`Verify ${certificate.title} with issuer (opens in new tab)`}>Verify ↗</a>
+            </div>
+          </div>
+        </article>)}</div>
+      </Section>
     </main>
     <footer className="about-footer eyebrow"><span>© {new Date().getFullYear()} Eshaan Ojha</span><a href="/">Return to orbit ↗</a></footer>
   </div>;

@@ -11,3 +11,15 @@
 @media(max-width:1000px){.about-section{grid-template-columns:140px minmax(0,1fr);gap:24px}.about-focus-grid,.about-milestones{gap:20px}.about-focus-grid h3{font-size:23px}.about-intro{padding:70px 0}.about-current>div,.about-contacts>div{grid-template-columns:110px minmax(0,1fr)}}
 @media(max-width:760px){.about-header{padding:26px 0}.about-header nav{gap:16px}.about-header a{font-size:9px;letter-spacing:.06em}.about-header nav a:first-child{display:none}.about-intro{grid-template-columns:1fr;padding:50px 0 54px;gap:40px}.about-intro h1{font-size:clamp(40px,8vw,60px);margin:26px 0}.about-portrait{max-width:290px;width:100%}.portrait-frame{aspect-ratio:5/4;clip-path:polygon(0 0,80% 0,100% 25%,100% 100%,0 100%)}.portrait-placeholder,.portrait-frame img{clip-path:polygon(0 0,80% 0,100% 25%,100% 100%,0 100%)}.portrait-placeholder svg{max-height:130px}.about-section{grid-template-columns:1fr;gap:26px;padding:36px 0 44px}.about-focus-grid,.about-milestones{grid-template-columns:1fr;gap:32px}.about-focus-grid h3{font-size:28px}.about-focus-grid p{margin:12px 0}.about-current>div,.about-contacts>div{grid-template-columns:1fr;gap:10px;padding:22px 0}.about-current dd,.about-contacts dd{font-size:18px;overflow-wrap:anywhere}.about-milestones h3{margin:12px 0}.about-footer{font-size:8px;letter-spacing:.08em}.about-closing{font-size:42px}}
 @media(prefers-reduced-motion:reduce){.about-page{animation:none;scroll-behavior:auto}.portrait-frame{transition:none}}
+.certificate-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:28px; }
+.certificate-card { min-width:0; border:1px solid var(--line); background:#0c0d0e; }
+.certificate-preview { display:flex; align-items:center; justify-content:center; aspect-ratio:900/696; background:#101214; border-bottom:1px solid var(--line); }
+.certificate-preview img { display:block; width:100%; height:100%; object-fit:contain; }
+.certificate-copy { padding:24px; }
+.certificate-copy .eyebrow { font-size:9px; margin:0 0 14px; }
+.certificate-copy h3 { font-size:23px; line-height:1.35; letter-spacing:-.025em; margin:0 0 14px; }
+.certificate-copy > p:not(.eyebrow) { color:var(--muted); font-size:14px; line-height:1.7; }
+.certificate-copy .certificate-date { font:10px/1.7 'JetBrains Mono',monospace; }
+.certificate-actions { display:flex; flex-wrap:wrap; gap:18px; margin-top:24px; }
+.certificate-actions a { font-size:12px; color:var(--accent); }
+@media(max-width:900px) { .certificate-grid { grid-template-columns:1fr; } }

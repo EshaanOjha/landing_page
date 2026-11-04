@@ -19,3 +19,7 @@ Each entry supports an optional `image` (a same-origin URL such as `/images/near
 ## Contact page
 
 `/contact` contains the contact section moved from About, including GitHub, LinkedIn, email and an optional résumé link. Edit `src/content/contact.js` to add real profile URLs and an email address. The homepage, About navigation and Projects closing link all point here. Old `/about#connect` links redirect to `/contact`. There is no contact form or message-submission backend.
+
+## Certificates
+
+About displays CS50x and TryHackMe Cyber Security 101 after “Along the way.” Originals and rendered preview images are self-hosted in `public/certificates/`. Titles, dates, file paths and issuer verification links are editable in `src/content/certificates.js`. PDF links open a new tab; original PDFs are unchanged. CS50x specifies a completion year only, so no month/day is inferred.
