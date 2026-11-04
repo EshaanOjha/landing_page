@@ -1,9 +1,10 @@
+import About from './pages/About.jsx';
 import Globe from './components/Globe.jsx';
 import Navigation from './components/Navigation.jsx';
 import { usePortfolio } from './hooks/usePortfolio.js';
 import { useNavigation } from './hooks/useNavigation.js';
 
-export default function App() {
+function Home() {
   const profile = usePortfolio();
   const navigation = useNavigation();
   return (
@@ -16,4 +17,8 @@ export default function App() {
       <Navigation.Links {...navigation} />
     </main>
   );
+}
+
+export default function App() {
+  return window.location.pathname.replace(/\/$/, "") === "/about" ? <About /> : <Home />;
 }
