@@ -17,7 +17,7 @@ export function mountGlobe(canvas, data, initialProfile) {
   const majorCities = cityTiers[2].geometry.coordinates;
   // Natural Earth 1:50m rivers, scale ranks 1–3; public-domain geometry.
 
-  // Natural Earth default FEATURECLA classifications; see DATA_SOURCES.md.
+  // Natural Earth classifications with the Kashmir/Ladakh display override; see DATA_SOURCES.md.
 
 
 

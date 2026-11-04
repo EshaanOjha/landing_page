@@ -10,7 +10,7 @@ Boundary data accessed 2026-11-03 from the Natural Earth vector repository:
 
 Source repository: https://github.com/nvkelso/natural-earth-vector/tree/master/geojson
 
-The default `FEATURECLA` classification is used, without a country-specific viewpoint override. Only `International boundary (verify)` features are solid. Disputed, control, indefinite and indeterminant-frontier features plus auxiliary claim/breakaway/frontier lines are dashed. This is a generalized dataset snapshot, not an exhaustive or real-time record of disputes or a statement of sovereignty. Natural Earth's policy: https://www.naturalearthdata.com/about/disputed-boundaries-policy/
+The default `FEATURECLA` classification is used except for the Kashmir/Ladakh override described below. Only `International boundary (verify)` features are solid. Disputed, control, indefinite and indeterminant-frontier features plus auxiliary claim/breakaway/frontier lines are dashed. This is a generalized dataset snapshot, not an exhaustive or real-time record of disputes or a statement of sovereignty. Natural Earth's policy: https://www.naturalearthdata.com/about/disputed-boundaries-policy/
 
 The existing 1:110m country topology supplies coastlines and the land mask. River geometry uses 1:50m rivers at scale ranks 1–3. Small resolution differences can occur between the coastlines and 1:50m boundary endpoints.
 
@@ -62,3 +62,9 @@ Accessed 2026-11-03 from https://github.com/nvkelso/natural-earth-vector/tree/ma
 - `ne_50m_populated_places.geojson`: city centers and `POP_MAX` estimates, with `ADM0CAP` retaining smaller national capitals. Tier cutoffs are 100,000, 1 million and 5 million; these are design thresholds, not official classifications. Values are historical dataset estimates, not current census figures. See https://www.naturalearthdata.com/downloads/50m-cultural-vectors/50m-populated-places/ .
 
 The expanded terrain layer has 174 coarse elevation contours. A screen-space opacity gradient makes them clearer in the foreground and less prominent along the horizon; it does not change elevation geometry.
+
+## Kashmir/Ladakh display override
+
+At the portfolio owner’s request, this region displays India’s claimed outer boundary as solid white lines. The source snapshot’s `FCLASS_IN` classifications identify which internal control/alternate claim lines to omit and which claim segments become solid. The Demchok/Samdu administered perimeter segments are also solid, so no contested styling remains locally. Other regions retain the original classifications.
+
+This is a map-presentation viewpoint, not a change to the source’s sovereignty metadata. The globe has uniform fill; country topology remains used only for coastline and combined land masking. The reproducible override and explicit Natural Earth feature IDs are in `scripts/apply-kashmir-viewpoint.py`.
