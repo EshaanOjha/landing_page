@@ -9,7 +9,7 @@ test('real geographic layers render, profile updates, and unmount cancels animat
   const data = Object.fromEntries(await Promise.all(names.map(async name => [name, JSON.parse(await readFile(new URL(`../public/data/${name}.json`, import.meta.url), 'utf8'))])));
   let disconnected = 0, removed = 0, frames = new Map(), next = 0, text = [];
   const gradient = { addColorStop() {} };
-  const ctx = new Proxy({ measureText: s => ({ width: s.length * 12 }), fillText: s => text.push(s), createLinearGradient: () => gradient }, { get: (target, key) => target[key] ?? (() => {}) });
+  const ctx = new Proxy({ measureText: s => ({ width: s.length * 12 }), fillText: s => text.push(s), createLinearGradient: () => gradient, createRadialGradient: () => gradient }, { get: (target, key) => target[key] ?? (() => {}) });
   const reduced = { matches: false, addEventListener() {}, removeEventListener() { removed++; } };
   const globals = { window: { matchMedia: () => reduced }, document: { hidden: false, fonts: { load: async () => {} } }, devicePixelRatio: 1,
     ResizeObserver: class { observe() {} disconnect() { disconnected++; } },

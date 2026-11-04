@@ -24,7 +24,7 @@ export default function Projects() {
   }, []);
   return <div className="about-page projects-page">
     <a className="about-skip" href="#projects-content">Skip to content</a>
-    <header className="about-header projects-header"><a className="back-link" href="/">← Back to globe</a><nav aria-label="Portfolio pages"><a href="/about">About</a><a href="/projects" aria-current="page">Projects</a></nav></header>
+    <header className="about-header projects-header"><a className="back-link" href="/">← Homepage</a><nav aria-label="Portfolio pages"><a href="/about">About</a><a href="/projects" aria-current="page">Projects</a></nav></header>
     <main id="projects-content">
       <section className="projects-intro" aria-labelledby="projects-heading">
         <p className="eyebrow with-dot">Selected work / 03 projects</p>

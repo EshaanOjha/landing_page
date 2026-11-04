@@ -59,7 +59,7 @@ export function mountNetwork(canvas) {
           dot(a.x, a.y, a.radius, 0.65);
         }
 
-        // Clicks launch bright packets from the nearest node and an expanding ring.
+        // Clicks add connections and launch bright packets from the nearest node.
         for (const pulse of pulses) {
           const age = (elapsed - pulse.time) / 1000;
           if (age >= 2) continue;
@@ -71,9 +71,6 @@ export function mountNetwork(canvas) {
             dot(origin.x + (target.x - origin.x) * progress,
               origin.y + (target.y - origin.y) * progress, 3, 1 - age / 2);
           }
-          ctx.globalAlpha = 1 - age / 2; ctx.strokeStyle = paint;
-          ctx.beginPath(); ctx.arc(pulse.x, pulse.y, age * 140 * influence + 3, 0, Math.PI * 2);
-          ctx.stroke(); ctx.globalAlpha = 1;
         }
         pulses = pulses.filter(pulse => elapsed - pulse.time < 2000);
       }

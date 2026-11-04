@@ -13,7 +13,7 @@ export default function Contact() {
   return <div className="about-page contact-page">
     <a className="about-skip" href="#contact-content">Skip to content</a>
     <header className="about-header contact-header">
-      <a className="back-link" href="/">← Back to globe</a>
+      <a className="back-link" href="/">← Homepage</a>
       <nav aria-label="Portfolio pages"><a href="/about">About</a><a href="/projects">Projects</a><a href="/contact" aria-current="page">Contact</a></nav>
     </header>
     <main id="contact-content" className="contact-main">

@@ -23,7 +23,7 @@ export default function About() {
   return <div className="about-page">
     <a className="about-skip" href="#about-content">Skip to content</a>
     <header className="about-header">
-      <a className="back-link" href="/">← Back to globe</a>
+      <a className="back-link" href="/">← Homepage</a>
       <nav aria-label="About page"><a href="#focus">Focus</a><a href="#certificates">Certificates</a><a href="/contact">Contact</a></nav>
     </header>
     <main id="about-content">
