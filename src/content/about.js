@@ -26,10 +26,4 @@ export const about = {
     { label: 'Practice', title: 'Learn through experiments', text: 'Turning concepts into small projects and recording the lessons along the way.' },
     { label: 'Next', title: 'Build in the open', text: 'Aiming to share useful tools, writeups and contributions with other developers.' },
   ],
-  contacts: [
-    { label: 'GitHub', text: 'Add your GitHub profile', href: null },
-    { label: 'LinkedIn', text: 'Add your LinkedIn profile', href: null },
-    { label: 'Email', text: 'Add your email address', href: null },
-  ],
-  resume: null, // e.g. '/resume.pdf'
 };

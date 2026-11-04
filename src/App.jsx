@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import Contact from './pages/Contact.jsx';
 import Projects from './pages/Projects.jsx';
 import About from './pages/About.jsx';
 import Globe from './components/Globe.jsx';
@@ -20,8 +22,17 @@ function Home() {
   );
 }
 
+function LegacyContactRedirect() {
+  useEffect(() => { window.location.replace("/contact"); }, []);
+  return <a href="/contact">Continue to Get in touch</a>;
+}
+
 export default function App() {
   const path = window.location.pathname.replace(/\/$/, "");
+  if (path === "/contact") return <Contact />;
+  if (path === "/about" && window.location.hash === "#connect") {
+    return <LegacyContactRedirect />;
+  }
   if (path === "/projects") return <Projects />;
   return path === "/about" ? <About /> : <Home />;
 }

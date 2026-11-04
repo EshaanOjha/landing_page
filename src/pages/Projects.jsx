@@ -41,7 +41,7 @@ export default function Projects() {
         <details className="project-details"><summary><span>Engineering details<span className="sr-only"> for {project.name}</span></span><span className="details-mark" aria-hidden="true">+</span></summary><div className="engineering-grid">{project.details.map(detail => <section key={detail.title}><h4>{detail.title}</h4><p>{detail.text}</p></section>)}</div><a href={project.repo} target="_blank" rel="noreferrer">Explore the repository ↗</a></details>
         {project.demo && <a className="text-link" href={project.demo} target="_blank" rel="noreferrer">Open live demo ↗</a>}
       </article>)}
-      <section className="projects-outro" aria-labelledby="projects-outro-heading"><p className="eyebrow">Keep exploring</p><h2 id="projects-outro-heading">The work is one part.<br /><span>Here’s the person behind it.</span></h2><a href="/about">More about me ↗</a><a href="/about#connect">Get in touch ↗</a></section>
+      <section className="projects-outro" aria-labelledby="projects-outro-heading"><p className="eyebrow">Keep exploring</p><h2 id="projects-outro-heading">The work is one part.<br /><span>Here’s the person behind it.</span></h2><a href="/about">More about me ↗</a><a href="/contact">Get in touch ↗</a></section>
     </main>
     <footer className="about-footer eyebrow"><span>© {new Date().getFullYear()} Eshaan Ojha</span><a href="/">Return to orbit ↗</a></footer>
   </div>;

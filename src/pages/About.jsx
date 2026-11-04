@@ -19,7 +19,7 @@ export default function About() {
     <a className="about-skip" href="#about-content">Skip to content</a>
     <header className="about-header">
       <a className="back-link" href="/">← Back to globe</a>
-      <nav aria-label="About page"><a href="#focus">Focus</a><a href="#currently">Currently</a><a href="#connect">Contact</a></nav>
+      <nav aria-label="About page"><a href="#focus">Focus</a><a href="#currently">Currently</a><a href="/contact">Contact</a></nav>
     </header>
     <main id="about-content">
       <section className="about-intro" aria-labelledby="about-heading">
@@ -52,10 +52,7 @@ export default function About() {
       <Section id="journey" label="Along the way"><div className="about-milestones">
         {about.milestones.map(item => <article key={item.label}><p className="eyebrow">{item.label}</p><h3>{item.title}</h3><p>{item.text}</p></article>)}
       </div></Section>
-      <Section id="connect" label="Get in touch"><h2 className="about-closing"><strong>Let’s build</strong><br />something useful.</h2>
-        <dl className="about-contacts">{about.contacts.map(item => <div key={item.label}><dt className="eyebrow">{item.label}</dt><dd>{item.href ? <a href={item.href}>{item.text} <span aria-hidden="true">↗</span></a> : <span className="contact-placeholder">{item.text}<small>Coming soon</small></span>}</dd></div>)}</dl>
-        {about.resume && <a className="text-link" href={about.resume}>View résumé ↗</a>}
-      </Section>
+
     </main>
     <footer className="about-footer eyebrow"><span>© {new Date().getFullYear()} Eshaan Ojha</span><a href="/">Return to orbit ↗</a></footer>
   </div>;
