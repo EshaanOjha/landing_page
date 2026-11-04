@@ -13,7 +13,7 @@
     "build": "vite build",
     "start": "node server/index.js --production",
     "db:seed": "node server/seed.js",
-    "test": "node --test tests/api.test.js tests/globe.test.js",
+    "test": "node --test tests/api.test.js tests/globe.test.js tests/network.test.js",
     "test:db": "node --test tests/database.test.js"
   },
   "dependencies": {

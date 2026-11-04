@@ -1,3 +1,4 @@
+import NetworkBackground from './components/NetworkBackground.jsx';
 import { useEffect } from 'react';
 import Contact from './pages/Contact.jsx';
 import Projects from './pages/Projects.jsx';
@@ -29,10 +30,10 @@ function LegacyContactRedirect() {
 
 export default function App() {
   const path = window.location.pathname.replace(/\/$/, "");
-  if (path === "/contact") return <Contact />;
+  if (path === "/contact") return <NetworkBackground><Contact /></NetworkBackground>;
   if (path === "/about" && window.location.hash === "#connect") {
     return <LegacyContactRedirect />;
   }
-  if (path === "/projects") return <Projects />;
-  return path === "/about" ? <About /> : <Home />;
+  if (path === "/projects") return <NetworkBackground><Projects /></NetworkBackground>;
+  return path === "/about" ? <NetworkBackground><About /></NetworkBackground> : <Home />;
 }

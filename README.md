@@ -23,3 +23,9 @@ Each entry supports an optional `image` (a same-origin URL such as `/images/near
 ## Certificates
 
 About displays CS50x and TryHackMe Cyber Security 101 after “Along the way.” Originals and rendered preview images are self-hosted in `public/certificates/`. Titles, dates, file paths and issuer verification links are editable in `src/content/certificates.js`. PDF links open a new tab; original PDFs are unchanged. CS50x specifies a completion year only, so no month/day is inferred.
+
+## Network canvas background
+
+About, Projects and Contact share `src/components/NetworkBackground.jsx`. The drawing in `src/background/network.js` is adapted from the supplied network-topology HTML: 65 drifting nodes, moving packets, proximity highlights, click pulses, and its default time/cursor hue cycle. The example's controls, text, footer and global accent changes are omitted. Canvas opacity is set in `src/styles/network.css`.
+
+The canvas is fixed behind scrollable content, ignores pointer hit testing and does not change navigation or touch scrolling. Click pulses are skipped on links and controls. Hidden tabs stop animation; reduced-motion users see a static background. Event listeners and animation frames are removed on unmount. The globe homepage does not mount this canvas.
