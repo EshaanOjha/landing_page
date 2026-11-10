@@ -1,6 +1,6 @@
 export const dataNames = [
   'world', 'cityTiers', 'rivers', 'borders', 'contestedBorders',
-  'terrain', 'urbanClusters', 'lakes', 'regionalBorders', 'forestBiomes',
+  'terrain', 'urbanClusters', 'lakes', 'regionalBorders',
 ];
 let pending;
 

@@ -4,7 +4,7 @@ import { mesh, merge } from 'topojson-client';
 
 export function mountGlobe(canvas, data, initialProfile) {
   const root = canvas.parentElement;
-  const { world, cityTiers, rivers, borders, contestedBorders, terrain, urbanClusters, lakes, regionalBorders, forestBiomes } = data;
+  const { world, cityTiers, rivers, borders, contestedBorders, terrain, urbanClusters, lakes, regionalBorders } = data;
   let profile = initialProfile;
   let disposed = false;
   let frameId;
@@ -31,16 +31,6 @@ export function mountGlobe(canvas, data, initialProfile) {
   const projection = geoSatellite().distance(distance)
     .clipAngle(Math.acos(1 / distance) * 180 / Math.PI - 0.001).precision(0.35);
   const path = d3.geoPath(projection, ctx);
-  // Cull distant forest polygons before streaming their vertices every frame.
-  const forestPatches = forestBiomes.coordinates.map(coordinates => {
-    const geometry = { type: 'Polygon', coordinates };
-    const center = d3.geoCentroid(geometry);
-    const extent = coordinates.flat().reduce((max, point) =>
-      Math.max(max, d3.geoDistance(center, point)), 0);
-    return { coordinates, center, extent: extent + 0.03 };
-  });
-  const visibleForests = { type: 'MultiPolygon', coordinates: [] };
-  const viewAngle = Math.acos(1 / distance);
   const reduced = media('(prefers-reduced-motion: reduce)');
   let width, height, radius, longitude = 73, previous, elapsed = 0, terrainStroke, rimStroke;
   // Fixed seed keeps the sparse star field stable across frames and resizing.
@@ -200,15 +190,6 @@ export function mountGlobe(canvas, data, initialProfile) {
     // also trims small coastline mismatches between the two map resolutions.
     ctx.save();
     ctx.beginPath(); path(land); ctx.clip();
-    // Broad forest biomes, clipped to land; not a present-day canopy survey.
-    ctx.save();
-    ctx.globalAlpha = 0.40;
-    ctx.fillStyle = '#344a3d';
-    visibleForests.coordinates = forestPatches
-      .filter(patch => d3.geoDistance(patch.center, [longitude, 12]) <= viewAngle + patch.extent)
-      .map(patch => patch.coordinates);
-    ctx.beginPath(); path(visibleForests); ctx.fill();
-    ctx.restore();
     ctx.save();
     ctx.globalAlpha = 1;
     ctx.strokeStyle = terrainStroke;
