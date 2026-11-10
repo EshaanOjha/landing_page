@@ -72,3 +72,15 @@ This is a map-presentation viewpoint, not a change to the source’s sovereignty
 ## Arunachal Pradesh display override
 
 At the portfolio owner's request, Arunachal Pradesh is displayed within India. Natural Earth feature `1746705337`, classified by `FCLASS_IN` as an international boundary, is rendered solid. Alternate claim line `1746705431`, classified by `FCLASS_IN` as unrecognized, is omitted. These two explicit feature overrides extend `scripts/apply-kashmir-viewpoint.py`; the existing Kashmir/Ladakh display and all other boundary classifications are preserved.
+
+## Forest-biome shading
+
+RESOLVE Ecoregions 2017, Dinerstein et al. (2017), distributed by OpenLayers under CC BY 4.0. Accessed 2026-11-11.
+- Source: https://openlayers.org/data/vector/ecoregions.json
+- Attribution and license: https://github.com/openlayers/data#httpsopenlayersorgdatavectorecoregionsjson
+- Dataset explanation: https://developers.google.com/earth-engine/datasets/catalog/RESOLVE_ECOREGIONS_2017
+- License: https://creativecommons.org/licenses/by/4.0/
+
+The six forest biomes plus mangroves are selected from the generalized source. Mediterranean woodland/scrub and nonforest biomes are excluded. Polygon winding is normalized for D3, holes are preserved, and tiny polygons under 0.000001 steradians are omitted. Reproduce with `node scripts/build-forest-biomes.mjs /path/to/ecoregions.json`. The renderer clips shading to the existing land mask and paints lakes above it.
+
+These are broad ecological regions, not observed current forest cover: cleared or developed land may fall within a forest biome. The subtle moss shading is a decorative indication of forest biomes rather than a canopy-density map.

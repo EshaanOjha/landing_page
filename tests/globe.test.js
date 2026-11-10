@@ -5,7 +5,7 @@ import { mountGlobe } from '../src/globe/renderer.js';
 import { defaultPortfolio } from '../shared/portfolio.js';
 
 test('real geographic layers render, profile updates, and unmount cancels animation', async () => {
-  const names = ['world','cityTiers','rivers','borders','contestedBorders','terrain','urbanClusters','lakes','regionalBorders'];
+  const names = ['world','cityTiers','rivers','borders','contestedBorders','terrain','urbanClusters','lakes','regionalBorders','forestBiomes'];
   const data = Object.fromEntries(await Promise.all(names.map(async name => [name, JSON.parse(await readFile(new URL(`../public/data/${name}.json`, import.meta.url), 'utf8'))])));
   let disconnected = 0, removed = 0, frames = new Map(), next = 0, text = [];
   const gradient = { addColorStop() {} };

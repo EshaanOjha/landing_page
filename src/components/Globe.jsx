@@ -38,7 +38,7 @@ export default function Globe({ profile }) {
 
   return (
     <div id="orbital-globe">
-      <canvas ref={canvasRef} role="img" aria-label={`${profile.firstName} ${profile.lastName} floating behind a rotating globe with borders, rivers, lakes, terrain and urban clusters.`} />
+      <canvas ref={canvasRef} role="img" aria-label={`${profile.firstName} ${profile.lastName} floating behind a rotating globe with borders, rivers, lakes, forest biomes, terrain and urban clusters.`} />
       {status === 'loading' && <span className="sr-only" role="status">Loading globe</span>}
       {status === 'error' && <div className="globe-error" role="alert">
         <p>The globe could not load.</p>

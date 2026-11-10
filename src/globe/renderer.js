@@ -4,7 +4,7 @@ import { mesh, merge } from 'topojson-client';
 
 export function mountGlobe(canvas, data, initialProfile) {
   const root = canvas.parentElement;
-  const { world, cityTiers, rivers, borders, contestedBorders, terrain, urbanClusters, lakes, regionalBorders } = data;
+  const { world, cityTiers, rivers, borders, contestedBorders, terrain, urbanClusters, lakes, regionalBorders, forestBiomes } = data;
   let profile = initialProfile;
   let disposed = false;
   let frameId;
@@ -31,6 +31,16 @@ export function mountGlobe(canvas, data, initialProfile) {
   const projection = geoSatellite().distance(distance)
     .clipAngle(Math.acos(1 / distance) * 180 / Math.PI - 0.001).precision(0.35);
   const path = d3.geoPath(projection, ctx);
+  // Cull distant forest polygons before streaming their vertices every frame.
+  const forestPatches = forestBiomes.coordinates.map(coordinates => {
+    const geometry = { type: 'Polygon', coordinates };
+    const center = d3.geoCentroid(geometry);
+    const extent = coordinates.flat().reduce((max, point) =>
+      Math.max(max, d3.geoDistance(center, point)), 0);
+    return { coordinates, center, extent: extent + 0.03 };
+  });
+  const visibleForests = { type: 'MultiPolygon', coordinates: [] };
+  const viewAngle = Math.acos(1 / distance);
   const reduced = media('(prefers-reduced-motion: reduce)');
   let width, height, radius, longitude = 73, previous, elapsed = 0, terrainStroke, rimStroke;
   // Fixed seed keeps the sparse star field stable across frames and resizing.
@@ -59,8 +69,8 @@ export function mountGlobe(canvas, data, initialProfile) {
     ctx.textAlign = 'left';
     ctx.textBaseline = 'alphabetic';
     let fontSize = Math.min(190, Math.max(42, width * 0.115));
-    const firstFont = () => {ctx.font = `700 ${fontSize}px "Inter", Arial, sans-serif`;};
-    const lastFont = () => {ctx.font = `400 ${fontSize}px "Inter", Arial, sans-serif`;};
+    const firstFont = () => {ctx.font = `200 ${fontSize}px "Outfit", Arial, sans-serif`;};
+    const lastFont = () => {ctx.font = `200 ${fontSize}px "Outfit", Arial, sans-serif`;};
     const measureName = () => {
       firstFont(); const first = trackedWidth(profile.firstName, -fontSize * 0.04);
       lastFont(); const last = trackedWidth(profile.lastName, fontSize * 0.015);
@@ -183,13 +193,22 @@ export function mountGlobe(canvas, data, initialProfile) {
     ctx.beginPath();
     ctx.arc(width / 2, height * 0.45 + radius, radius, 0, Math.PI * 2);
     ctx.fill();
-    ctx.strokeStyle = '#fff';
+    ctx.strokeStyle = '#d8d5cd';
     ctx.lineJoin = 'round';
     ctx.lineCap = 'round';
     // The shared spherical projection hides far-side rivers. The land mask
     // also trims small coastline mismatches between the two map resolutions.
     ctx.save();
     ctx.beginPath(); path(land); ctx.clip();
+    // Broad forest biomes, clipped to land; not a present-day canopy survey.
+    ctx.save();
+    ctx.globalAlpha = 0.40;
+    ctx.fillStyle = '#344a3d';
+    visibleForests.coordinates = forestPatches
+      .filter(patch => d3.geoDistance(patch.center, [longitude, 12]) <= viewAngle + patch.extent)
+      .map(patch => patch.coordinates);
+    ctx.beginPath(); path(visibleForests); ctx.fill();
+    ctx.restore();
     ctx.save();
     ctx.globalAlpha = 1;
     ctx.strokeStyle = terrainStroke;
@@ -200,21 +219,25 @@ export function mountGlobe(canvas, data, initialProfile) {
     ctx.globalAlpha = 0.18;
     ctx.lineWidth = 0.45;
     ctx.beginPath(); path(regionalBorders); ctx.stroke();
-    ctx.globalAlpha = 0.32;
-    ctx.lineWidth = 0.45;
+    ctx.globalAlpha = 0.75;
+    ctx.strokeStyle = '#559fa6';
+    ctx.lineWidth = 0.6;
     ctx.beginPath(); path(rivers); ctx.stroke();
     // Small, stable point clusters reveal actual built-up-area shapes.
     ctx.globalAlpha = 0.48;
-    ctx.fillStyle = '#fff';
+    ctx.fillStyle = '#d8c498';
     ctx.beginPath(); path.pointRadius(0.62)(urbanClusters); ctx.fill();
     ctx.restore();
-    // Water masks underlying river/terrain/urban marks, preserving dark interiors.
+    // Opaque dark water masks underlying marks, then receives a faint teal fill.
     ctx.save();
     ctx.globalAlpha = 1;
     ctx.fillStyle = '#080808';
     ctx.beginPath(); path(lakes); ctx.fill();
-    ctx.globalAlpha = 0.46;
-    ctx.strokeStyle = '#fff'; ctx.lineWidth = 0.65;
+    ctx.globalAlpha = 0.40;
+    ctx.fillStyle = '#244c54';
+    ctx.beginPath(); path(lakes); ctx.fill();
+    ctx.globalAlpha = 0.72;
+    ctx.strokeStyle = '#559fa6'; ctx.lineWidth = 0.65;
     ctx.beginPath(); path(lakes); ctx.stroke();
     ctx.restore();
     ctx.globalAlpha = 0.7;
@@ -231,7 +254,7 @@ export function mountGlobe(canvas, data, initialProfile) {
     ctx.lineWidth = 1.0;
     ctx.beginPath(); path(coastlines); ctx.stroke();
     ctx.globalAlpha = 1;
-    ctx.fillStyle = '#fff';
+    ctx.fillStyle = '#d8c498';
     // Draw smaller cities first so major centers remain distinct in clusters.
     for (const tier of cityTiers) {
       ctx.save();
@@ -263,9 +286,9 @@ export function mountGlobe(canvas, data, initialProfile) {
     rimStroke.addColorStop(0.64, '#c7e2e6');
     rimStroke.addColorStop(1, 'rgba(255,255,255,0.08)');
     terrainStroke = ctx.createLinearGradient(0, height * 0.45, 0, height);
-    terrainStroke.addColorStop(0, 'rgba(255,255,255,0.035)');
-    terrainStroke.addColorStop(0.45, 'rgba(255,255,255,0.10)');
-    terrainStroke.addColorStop(1, 'rgba(255,255,255,0.22)');
+    terrainStroke.addColorStop(0, 'rgba(121,117,107,0.06)');
+    terrainStroke.addColorStop(0.45, 'rgba(121,117,107,0.18)');
+    terrainStroke.addColorStop(1, 'rgba(121,117,107,0.35)');
     projection.scale(radius / Math.sqrt((distance - 1) / (distance + 1)))
       .translate([width / 2, height * 0.45 + radius]);
     draw();
@@ -285,8 +308,7 @@ export function mountGlobe(canvas, data, initialProfile) {
   }
   // Self-hosted fonts load without third-party requests; redraw even in reduced motion.
   Promise.all([
-    document.fonts.load('700 100px "Inter"'),
-    document.fonts.load('400 100px "Inter"'),
+    document.fonts.load('200 100px "Outfit"'),
     document.fonts.load('400 12px "JetBrains Mono"')
   ]).then(draw).catch(() => {});
   reduced.addEventListener('change', draw);
