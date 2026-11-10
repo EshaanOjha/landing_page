@@ -23,3 +23,5 @@
 .certificate-actions { display:flex; flex-wrap:wrap; gap:18px; margin-top:24px; }
 .certificate-actions a { font-size:12px; color:var(--accent); }
 @media(max-width:900px) { .certificate-grid { grid-template-columns:1fr; } }
+
+.portrait-frame--circle{aspect-ratio:1;border-radius:50%;clip-path:none;overflow:hidden}.portrait-frame--circle img{display:block;object-fit:cover;object-position:center;border-radius:50%;clip-path:none}

@@ -4,7 +4,8 @@ export const about = {
   intro: "I'm Eshaan Ojha. I’m interested in how machines communicate, how systems stay secure, and the backend code that makes everything work.",
   education: 'Computer science · Learning by building',
   location: 'Based in India',
-  portrait: null, // e.g. '/images/portrait.jpg'; place the file in public/images/
+  portrait: '/images/about-aircraft.png',
+  portraitAlt: 'Black-and-white photograph of an aircraft in flight',
   story: [
     'I’m a computer science student exploring networking, security and backend development. I like understanding what happens underneath an interface: where a request goes, how data moves, and what happens when something breaks.',
     'My favorite way to learn is to build a small system, take it apart, and make it better. I’m especially curious about reliable services, practical security, and the infrastructure connecting them.',

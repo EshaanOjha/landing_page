@@ -34,8 +34,8 @@ export default function About() {
           <p className="about-lead">{about.intro}</p>
         </div>
         <figure className="about-portrait">
-          <div className="portrait-frame">
-            {about.portrait ? <img src={about.portrait} alt="Eshaan Ojha" /> : <div className="portrait-placeholder">
+          <div className={`portrait-frame${about.portrait ? ' portrait-frame--circle' : ''}`}>
+            {about.portrait ? <img src={about.portrait} alt={about.portraitAlt} width="970" height="545" /> : <div className="portrait-placeholder">
               <svg viewBox="0 0 300 320" aria-hidden="true"><path d="M55 75H150L245 145V245H150L55 175Z M150 75V245 M55 175L245 145" /><circle cx="55" cy="75" r="5"/><circle cx="150" cy="75" r="5"/><circle cx="245" cy="145" r="5"/><circle cx="245" cy="245" r="5"/><circle cx="150" cy="245" r="5"/><circle cx="55" cy="175" r="5"/></svg>
               <span className="eyebrow">Portrait / Coming soon</span>
             </div>}
