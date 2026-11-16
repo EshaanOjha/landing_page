@@ -36,7 +36,51 @@ export function mountGlobe(canvas, data, initialProfile) {
   // Fixed seed keeps the sparse star field stable across frames and resizing.
   let seed = 41;
   const random = () => ((seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296);
-  const stars = Array.from({length: 28}, () => [random(), 0.025 + random() * 0.37, 0.35 + random() * 0.4, 0.1 + random() * 0.19]);
+  const stars = Array.from({ length: 110 }, (_, i) => ({
+    x: 0.025 + random() * 0.95,
+    y: 0.035 + random() * 0.33,
+    size: i % 17 === 0 ? 1.1 : 0.4 + random() * 0.4,
+    alpha: i % 17 === 0 ? 0.65 : 0.18 + random() * 0.25,
+    phase: random() * Math.PI * 2,
+    period: 8000 + random() * 6000,
+    twinkle: i % 13 === 0,
+  }));
+  // Decorative constellation patterns, not an astronomical sky chart.
+  const constellations = [
+    { x: 0.16, y: 0.12, points: [[-0.5,0.1],[-0.25,-0.18],[0,0.05],[0.24,-0.25],[0.48,0.02]], edges: [[0,1],[1,2],[2,3],[3,4]] },
+    { x: 0.79, y: 0.16, points: [[-0.5,-0.22],[-0.2,-0.12],[0.05,0.13],[0.4,0.04],[0.32,-0.26]], edges: [[0,1],[1,2],[2,3],[3,4],[4,1]] },
+  ];
+  function drawSky() {
+    ctx.save();
+    ctx.fillStyle = '#e7e3d8';
+    const count = Math.min(stars.length, Math.max(40, Math.round(width * height / 12000)));
+    for (const star of stars.slice(0, count)) {
+      // Leave breathing room around the name and its sunrise glow.
+      const quiet = star.x > 0.22 && star.x < 0.78 && star.y > 0.22 ? 0.25 : 1;
+      const shimmer = star.twinkle && !reduced.matches
+        ? 0.82 + 0.18 * Math.sin(elapsed / star.period * Math.PI * 2 + star.phase) : 1;
+      ctx.globalAlpha = star.alpha * quiet * shimmer;
+      ctx.beginPath(); ctx.arc(star.x * width, star.y * height, star.size, 0, Math.PI * 2); ctx.fill();
+    }
+    const span = Math.min(width * 0.19, height * 0.22, 200);
+    ctx.strokeStyle = '#7a949f';
+    ctx.lineWidth = 0.65;
+    for (const constellation of constellations) {
+      const points = constellation.points.map(([x, y]) =>
+        [constellation.x * width + x * span, constellation.y * height + y * span]);
+      ctx.globalAlpha = 0.18;
+      ctx.beginPath();
+      for (const [a, b] of constellation.edges) {
+        ctx.moveTo(...points[a]); ctx.lineTo(...points[b]);
+      }
+      ctx.stroke();
+      ctx.globalAlpha = 0.55;
+      for (const [x, y] of points) {
+        ctx.beginPath(); ctx.arc(x, y, 0.95, 0, Math.PI * 2); ctx.fill();
+      }
+    }
+    ctx.restore();
+  }
   // Select existing city coordinates near major urban centers; no added labels.
   const pulseCities = [[73,19],[77,29],[139,36],[-74,41],[0,51],[-46,-24],[31,30],[151,-34]]
     .map(target => majorCities.reduce((best, city) => d3.geoDistance(city, target) < d3.geoDistance(best, target) ? city : best));
@@ -155,13 +199,7 @@ export function mountGlobe(canvas, data, initialProfile) {
     ctx.clearRect(0, 0, width, height);
     drawCornerDetails();
     projection.rotate([-longitude, -12, -12]);
-    ctx.save();
-    ctx.fillStyle = '#fff';
-    for (const [x, y, size, alpha] of stars) {
-      ctx.globalAlpha = alpha;
-      ctx.beginPath(); ctx.arc(x * width, y * height, size, 0, Math.PI * 2); ctx.fill();
-    }
-    ctx.restore();
+    drawSky();
     // Paint the name behind the opaque sphere for true curved-horizon occlusion.
     drawHorizonName();
     // Draw the soft outer atmosphere first; the opaque globe covers its inner glow.
