@@ -97,9 +97,6 @@ export function mountGlobe(canvas, data, initialProfile) {
   }
   function drawHorizonName() {
     const horizon = height * 0.45;
-    const riseDuration = 4000; // 40% slower than the original 2.4-second rise.
-    const progress = reduced.matches ? 1 : Math.min(elapsed / riseDuration, 1);
-    const rise = progress * progress * (3 - 2 * progress);
     ctx.save();
     ctx.textAlign = 'left';
     ctx.textBaseline = 'alphabetic';
@@ -116,7 +113,7 @@ export function mountGlobe(canvas, data, initialProfile) {
     metrics = measureName();
     const startX = (width - metrics.total) / 2;
     const floatAmplitude = Math.min(7, Math.max(2, fontSize * 0.045));
-    // Keep the j's descender above the curved horizon even at the lowest float.
+    // Let the j dip behind the horizon, then clear it at the top of each hover.
     lastFont();
     const jIndex = profile.lastName.indexOf('j');
     const prefix = jIndex < 0 ? '' : profile.lastName.slice(0, jIndex);
@@ -125,18 +122,12 @@ export function mountGlobe(canvas, data, initialProfile) {
     const dx = Math.min(radius, Math.abs(jX - width / 2));
     const letterHorizon = horizon + radius - Math.sqrt(radius * radius - dx * dx);
     const descent = ctx.measureText('j').actualBoundingBoxDescent ?? fontSize * 0.22;
-    const settledBaseline = Math.min(horizon + fontSize * 0.08,
-      letterHorizon - descent - floatAmplitude - 3);
-    const riseBaseline = horizon + fontSize * 0.38
-      + (settledBaseline - horizon - fontSize * 0.38) * rise;
-    // Start floating only after the entrance; ease in from zero displacement
-    // and velocity so the handoff never jumps.
-    const floatTime = Math.max(0, elapsed - riseDuration);
-    const floatProgress = Math.min(floatTime / 1800, 1);
-    const floatEase = floatProgress * floatProgress * (3 - 2 * floatProgress);
-    const floatOffset = reduced.matches ? 0
-      : -Math.sin(floatTime / 6200 * Math.PI * 2) * floatAmplitude * floatEase;
-    const baseline = riseBaseline + floatOffset;
+    const hoverBaseline = letterHorizon - descent + floatAmplitude - 2;
+    // Hover immediately, without an entrance rise or delayed floating phase.
+    // Reduced motion holds the name at the fully readable upper position.
+    const floatOffset = reduced.matches ? -floatAmplitude
+      : -Math.sin(elapsed / 6200 * Math.PI * 2) * floatAmplitude;
+    const baseline = hoverBaseline + floatOffset;
     // A soft elliptical sunrise sits behind the lettering and opaque globe.
     // Gradients avoid a full-screen blur pass and keep the effect inexpensive.
     ctx.save();
@@ -147,7 +138,7 @@ export function mountGlobe(canvas, data, initialProfile) {
     sunrise.addColorStop(0.32, 'rgba(227,168,70,0.16)');
     sunrise.addColorStop(0.7, 'rgba(192,123,42,0.05)');
     sunrise.addColorStop(1, 'rgba(192,123,42,0)');
-    ctx.globalAlpha = 0.25 + rise * 0.75;
+    ctx.globalAlpha = 1;
     ctx.fillStyle = sunrise;
     ctx.fillRect(-1, -1, 2, 2);
     ctx.restore();
