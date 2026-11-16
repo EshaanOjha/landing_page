@@ -53,7 +53,8 @@ export function mountGlobe(canvas, data, initialProfile) {
   }
   function drawHorizonName() {
     const horizon = height * 0.45;
-    const progress = reduced.matches ? 1 : Math.min(elapsed / 2400, 1);
+    const riseDuration = 4000; // 40% slower than the original 2.4-second rise.
+    const progress = reduced.matches ? 1 : Math.min(elapsed / riseDuration, 1);
     const rise = progress * progress * (3 - 2 * progress);
     ctx.save();
     ctx.textAlign = 'left';
@@ -85,8 +86,8 @@ export function mountGlobe(canvas, data, initialProfile) {
     const riseBaseline = horizon + fontSize * 0.38
       + (settledBaseline - horizon - fontSize * 0.38) * rise;
     // Start floating only after the entrance; ease in from zero displacement
-    // and velocity so the handoff never jumps. Keep the subtitle anchored.
-    const floatTime = Math.max(0, elapsed - 2400);
+    // and velocity so the handoff never jumps.
+    const floatTime = Math.max(0, elapsed - riseDuration);
     const floatProgress = Math.min(floatTime / 1800, 1);
     const floatEase = floatProgress * floatProgress * (3 - 2 * floatProgress);
     const floatOffset = reduced.matches ? 0
@@ -133,15 +134,6 @@ export function mountGlobe(canvas, data, initialProfile) {
     shine.addColorStop(1, 'rgba(255,247,221,0)');
     ctx.fillStyle = shine;
     paintName();
-    // Fit the supporting line independently; keep it readable on narrow screens.
-    const subtitle = profile.subtitle;
-    const monoSize = width < 480 ? 11 : 12;
-    ctx.font = `400 ${monoSize}px "JetBrains Mono", monospace`;
-    let tracking = width < 480 ? 0.45 : 1.6;
-    const baseWidth = trackedWidth(subtitle, 0);
-    tracking = Math.max(0, Math.min(tracking, (width * 0.9 - baseWidth) / (subtitle.length - 1)));
-    ctx.fillStyle = '#8b949b';
-    drawTracked(subtitle, (width - trackedWidth(subtitle, tracking)) / 2, riseBaseline - fontSize * 0.82 - 24, tracking);
     ctx.restore();
   }
   function drawCornerDetails() {
