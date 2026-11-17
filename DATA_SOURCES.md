@@ -72,3 +72,13 @@ This is a map-presentation viewpoint, not a change to the source’s sovereignty
 ## Arunachal Pradesh display override
 
 At the portfolio owner's request, Arunachal Pradesh is displayed within India. Natural Earth feature `1746705337`, classified by `FCLASS_IN` as an international boundary, is rendered solid. Alternate claim line `1746705431`, classified by `FCLASS_IN` as unrecognized, is omitted. These two explicit feature overrides extend `scripts/apply-kashmir-viewpoint.py`; the existing Kashmir/Ladakh display and all other boundary classifications are preserved.
+
+## Andromeda background photograph
+
+`public/images/andromeda.jpg` is the 1920px wallpaper of ESA/Hubble image heic1112f, obtained 2026-11-17.
+- Source: https://esahubble.org/images/heic1112f/
+- Image: https://cdn.esahubble.org/archives/images/wallpaper4/heic1112f.jpg
+- Credit: ESA/Hubble & Digitized Sky Survey 2. Acknowledgment: Davide De Martin (ESA/Hubble)
+- License: CC BY 4.0, https://creativecommons.org/licenses/by/4.0/
+
+The original asset is unchanged. CSS adapts orientation, framing, brightness and saturation, fades its edges, and adds a warm core glow. This is an artistic backdrop, not a physically accurate Earth/Andromeda view. Visible linked credit is shown whenever Andromeda is selected. No extra galaxy particle/starlight layer is added; the existing sparse stars remain.

@@ -6,6 +6,7 @@ export default function Globe({ profile, galaxy = 'milky-way' }) {
   const canvasRef = useRef(null);
   const rendererRef = useRef(null);
   const profileRef = useRef(profile);
+  const galaxyRef = useRef(galaxy);
   const [status, setStatus] = useState('loading');
   const [attempt, setAttempt] = useState(0);
 
@@ -15,12 +16,17 @@ export default function Globe({ profile, galaxy = 'milky-way' }) {
   }, [profile]);
 
   useEffect(() => {
+    galaxyRef.current = galaxy;
+    rendererRef.current?.updateGalaxy(galaxy);
+  }, [galaxy]);
+
+  useEffect(() => {
     let cancelled = false;
     let instance;
     Promise.all([loadGlobeData(), import('../globe/renderer.js')])
       .then(([data, { mountGlobe }]) => {
         if (cancelled) return;
-        instance = mountGlobe(canvasRef.current, data, profileRef.current);
+        instance = mountGlobe(canvasRef.current, data, profileRef.current, galaxyRef.current);
         rendererRef.current = instance;
         setStatus('ready');
       })

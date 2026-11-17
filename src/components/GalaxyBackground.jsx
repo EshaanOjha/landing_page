@@ -20,21 +20,10 @@ export default function GalaxyBackground({ galaxy }) {
         {dust.map((star, i) => <circle key={i} cx={(star.x - .5) * 1100} cy={star.y * 60} r={star.r} fill="#c2cee5" opacity={.12 + star.r * .18}/>)}
       </g>
     </svg>
-    <svg className={`galaxy-scene${galaxy === 'andromeda' ? ' is-visible' : ''}`} viewBox="0 0 1000 400" preserveAspectRatio="xMidYMid slice">
-      <defs>
-        <radialGradient id="andromeda-haze"><stop stopColor="#f4dfb2" stopOpacity=".5"/><stop offset=".16" stopColor="#b6b4d3" stopOpacity=".26"/><stop offset=".55" stopColor="#637b9a" stopOpacity=".12"/><stop offset="1" stopColor="#637b9a" stopOpacity="0"/></radialGradient>
-      </defs>
-      <g transform="translate(530 135) rotate(-24)">
-        <ellipse rx="285" ry="80" fill="url(#andromeda-haze)"/>
-        <ellipse rx="170" ry="30" fill="none" stroke="#171b29" strokeWidth="5" opacity=".5"/>
-        <ellipse rx="100" ry="18" fill="none" stroke="#9bacc9" strokeWidth="1" opacity=".12"/>
-        {dust.map((star, i) => {
-          const angle = star.x * Math.PI * 8;
-          const radius = 20 + i / dust.length * 230;
-          return <circle key={i} cx={Math.cos(angle) * radius} cy={Math.sin(angle) * radius * .23 + star.y * 10} r={star.r} fill="#d4d7e3" opacity=".25"/>;
-        })}
-      </g>
-    </svg>
+    <div className={`galaxy-scene andromeda-scene${galaxy === 'andromeda' ? ' is-visible' : ''}`}>
+      <img className="andromeda-image" src="/images/andromeda.jpg" alt="" width="1920" height="1080" decoding="async" />
+      <div className="andromeda-core" />
+    </div>
   </div>;
 }
 
@@ -43,5 +32,13 @@ export function GalaxySelector({ galaxy, onChange }) {
     <span className="galaxy-selector-label">Sky</span>
     {[['milky-way', 'Milky Way'], ['andromeda', 'Andromeda']].map(([id, label]) =>
       <button type="button" key={id} aria-pressed={galaxy === id} onClick={() => onChange(id)}>{label}</button>)}
+  </div>;
+}
+
+export function GalaxyCredit({ galaxy }) {
+  if (galaxy !== 'andromeda') return null;
+  return <div className="galaxy-credit">
+    <a href="https://esahubble.org/images/heic1112f/" target="_blank" rel="noreferrer">ESA/Hubble &amp; Digitized Sky Survey 2. Acknowledgment: Davide De Martin (ESA/Hubble)</a>
+    <span> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a> · Color and framing adapted</span>
   </div>;
 }

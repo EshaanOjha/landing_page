@@ -2,10 +2,11 @@ import * as d3 from 'd3-geo';
 import { geoSatellite } from 'd3-geo-projection';
 import { mesh, merge } from 'topojson-client';
 
-export function mountGlobe(canvas, data, initialProfile) {
+export function mountGlobe(canvas, data, initialProfile, initialGalaxy = 'andromeda') {
   const root = canvas.parentElement;
   const { world, cityTiers, rivers, borders, contestedBorders, terrain, urbanClusters, lakes, regionalBorders } = data;
   let profile = initialProfile;
+  let galaxy = initialGalaxy;
   let disposed = false;
   let frameId;
   const media = window.matchMedia.bind(window);
@@ -200,6 +201,17 @@ export function mountGlobe(canvas, data, initialProfile) {
     ctx.shadowColor = 'rgba(141,215,226,0.35)'; ctx.shadowBlur = 8;
     ctx.beginPath(); ctx.arc(width / 2, height * 0.45 + radius, radius, 0, Math.PI * 2); ctx.stroke();
     ctx.restore();
+    if (galaxy === 'andromeda') {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(239,206,149,0.45)';
+      ctx.lineWidth = 1.2;
+      ctx.shadowColor = 'rgba(239,190,105,0.3)';
+      ctx.shadowBlur = 12;
+      ctx.beginPath();
+      ctx.arc(width / 2, height * 0.45 + radius, radius,
+        -Math.PI / 2 - 0.14, -Math.PI / 2 + 0.14);
+      ctx.stroke(); ctx.restore();
+    }
     ctx.fillStyle = '#101010';
     ctx.beginPath();
     ctx.arc(width / 2, height * 0.45 + radius, radius, 0, Math.PI * 2);
@@ -316,6 +328,7 @@ export function mountGlobe(canvas, data, initialProfile) {
   reduced.addEventListener('change', draw);
   resize(); frameId = requestAnimationFrame(animate);
   return {
+    updateGalaxy(next) { galaxy = next; draw(); },
     updateProfile(next) { profile = next; draw(); },
     dispose() {
       disposed = true;

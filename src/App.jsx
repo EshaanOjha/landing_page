@@ -1,6 +1,6 @@
 import NetworkBackground from './components/NetworkBackground.jsx';
 import { useEffect, useState } from 'react';
-import { GalaxySelector } from './components/GalaxyBackground.jsx';
+import { GalaxySelector, GalaxyCredit } from './components/GalaxyBackground.jsx';
 import Contact from './pages/Contact.jsx';
 import Projects from './pages/Projects.jsx';
 import About from './pages/About.jsx';
@@ -11,7 +11,7 @@ import { useNavigation } from './hooks/useNavigation.js';
 
 function Home() {
   const profile = usePortfolio();
-  const [galaxy, setGalaxy] = useState('milky-way');
+  const [galaxy, setGalaxy] = useState('andromeda');
   const navigation = useNavigation();
   return (
     <main id="portfolio-hero" aria-label={`${profile.firstName} ${profile.lastName} portfolio`}
@@ -22,6 +22,7 @@ function Home() {
       </div>
       <Navigation.Links {...navigation} />
       <GalaxySelector galaxy={galaxy} onChange={setGalaxy} />
+      <GalaxyCredit galaxy={galaxy} />
     </main>
   );
 }
