@@ -1,0 +1,12 @@
+.galaxy-background{position:absolute;inset:0 0 auto;height:43%;pointer-events:none;overflow:hidden;mask-image:linear-gradient(#000 65%,transparent);-webkit-mask-image:linear-gradient(#000 65%,transparent)}
+.galaxy-scene{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 1.6s ease}
+.galaxy-scene.is-visible{opacity:1}
+#orbital-globe canvas{position:relative}
+.galaxy-selector{position:absolute;top:24px;left:28px;z-index:20;display:flex;align-items:center;gap:4px;padding:4px;border:1px solid rgba(141,167,190,.15);border-radius:20px;background:rgba(5,8,14,.7);font:10px 'JetBrains Mono',monospace}
+.galaxy-selector-label{padding:0 8px;color:#74808d;text-transform:uppercase;letter-spacing:.1em}
+.galaxy-selector button{font:inherit;border:0;border-radius:14px;padding:8px 10px;cursor:pointer;color:#8c97a4;background:transparent;transition:color .2s,background .2s;min-height:32px}
+.galaxy-selector button[aria-pressed=true]{color:#e5d6b4;background:rgba(180,193,215,.10)}
+.galaxy-selector button:hover{color:#f5f7f8}
+.galaxy-selector button:focus-visible{outline:2px solid #8dd7e2;outline-offset:2px}
+@media(max-width:760px),(max-height:520px){.galaxy-selector{top:14px;left:20px;font-size:9px}.galaxy-selector-label{display:none}.galaxy-selector button{padding:6px 9px}.galaxy-background{height:36%}}
+@media(prefers-reduced-motion:reduce){.galaxy-scene,.galaxy-selector button{transition:none}}

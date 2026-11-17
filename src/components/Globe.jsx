@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
+import GalaxyBackground from './GalaxyBackground.jsx';
 import { loadGlobeData } from '../globe/loadData.js';
 
-export default function Globe({ profile }) {
+export default function Globe({ profile, galaxy = 'milky-way' }) {
   const canvasRef = useRef(null);
   const rendererRef = useRef(null);
   const profileRef = useRef(profile);
@@ -38,6 +39,7 @@ export default function Globe({ profile }) {
 
   return (
     <div id="orbital-globe">
+      <GalaxyBackground galaxy={galaxy} />
       <canvas ref={canvasRef} role="img" aria-label={`${profile.firstName} ${profile.lastName} floating behind a rotating globe with borders, rivers, lakes, terrain and urban clusters.`} />
       {status === 'loading' && <span className="sr-only" role="status">Loading globe</span>}
       {status === 'error' && <div className="globe-error" role="alert">
