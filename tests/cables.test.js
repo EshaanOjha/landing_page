@@ -44,6 +44,8 @@ test('city network includes every supplied capital and city without duplicate li
   const hubs = JSON.parse(readFileSync(new URL('../src/globe/cityHubs.json',import.meta.url)));
   const nodes = cityNetworkNodes(tiers);
   const routes = createCityRoutes(tiers);
+  const prepared = JSON.parse(readFileSync(new URL('../src/globe/cityRoutes.json', import.meta.url)));
+  assert.deepEqual(prepared, routes, 'precomputed startup routes match the generator');
   assert.ok(nodes.length >= 1080);
   assert.ok(hubs.filter(h => h.capital).length >= 200);
   const endpoints = new Set(), edges = new Set();

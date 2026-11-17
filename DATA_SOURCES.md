@@ -99,3 +99,5 @@ City connections combine all existing city tiers with Natural Earth's public-dom
 Source: https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_populated_places_simple.geojson
 
 The subset is stored in `src/globe/cityHubs.json` with names, countries, capital flags and coordinates. Every node connects to its nearest neighbor and a second neighbor within approximately 1,530 km, deduplicating undirected edges. Only duplicate locations within roughly 1 km are merged. Gold trails are illustrative, not actual internet routes or measured traffic. Offscreen packet tracks are culled; both flow layers honor reduced motion and share the existing animation loop.
+
+City connections are precomputed in `src/globe/cityRoutes.json` to avoid rebuilding the proximity graph during page startup. Regenerate after changing city data or connection rules with `node scripts/build-city-network.mjs`.
