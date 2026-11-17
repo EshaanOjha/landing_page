@@ -27,18 +27,10 @@ export default function GalaxyBackground({ galaxy }) {
   </div>;
 }
 
-export function GalaxySelector({ galaxy, onChange }) {
-  return <div className="galaxy-selector" role="group" aria-label="Background galaxy">
-    <span className="galaxy-selector-label">Sky</span>
-    {[['milky-way', 'Milky Way'], ['andromeda', 'Andromeda']].map(([id, label]) =>
-      <button type="button" key={id} aria-pressed={galaxy === id} onClick={() => onChange(id)}>{label}</button>)}
-  </div>;
-}
-
 export function GalaxyCredit({ galaxy }) {
   if (galaxy !== 'andromeda') return null;
   return <div className="galaxy-credit">
-    <a href="https://esahubble.org/images/heic1112f/" target="_blank" rel="noreferrer">ESA/Hubble &amp; Digitized Sky Survey 2. Acknowledgment: Davide De Martin (ESA/Hubble)</a>
-    <span> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a> · Color and framing adapted</span>
+    <a title="ESA/Hubble & Digitized Sky Survey 2. Acknowledgment: Davide De Martin (ESA/Hubble). Color and framing adapted." href="https://esahubble.org/images/heic1112f/" target="_blank" rel="noreferrer">ESA/Hubble &amp; DSS2 · Davide De Martin</a>
+    <span> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a> · Adapted</span>
   </div>;
 }

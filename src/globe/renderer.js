@@ -1,5 +1,7 @@
 import * as d3 from 'd3-geo';
 import { createCableLayer } from './cables.js';
+import { createCityRoutes } from './cityNetwork.js';
+import cityHubs from './cityHubs.json' with { type: 'json' };
 import { geoSatellite } from 'd3-geo-projection';
 import { mesh, merge } from 'topojson-client';
 
@@ -16,6 +18,7 @@ export function mountGlobe(canvas, data, initialProfile, initialGalaxy = 'androm
 
   // Natural Earth POP_MAX estimates classify symbols; no population labels.
 
+  const hubGeometry = { type: 'MultiPoint', coordinates: cityHubs.map(hub => hub.coordinates) };
   const majorCities = cityTiers[2].geometry.coordinates;
   // Natural Earth 1:50m rivers, scale ranks 1–3; public-domain geometry.
 
@@ -29,13 +32,18 @@ export function mountGlobe(canvas, data, initialProfile, initialGalaxy = 'androm
 
 
 
+  const latitude = 32; // Frame central and southern Europe above the cropped horizon.
   const distance = 1.12;
   const projection = geoSatellite().distance(distance)
     .clipAngle(Math.acos(1 / distance) * 180 / Math.PI - 0.001).precision(0.35);
   const path = d3.geoPath(projection, ctx);
   let cableLayer = null;
+  const cityNetwork = createCableLayer(ctx, projection, createCityRoutes(cityTiers), {
+    color: '#9c8c68', opacity: 0.19, forward: '#e6d6a9', backward: '#bca477',
+    packets: 1, period: 18000, width: 1.25,
+  });
   const reduced = media('(prefers-reduced-motion: reduce)');
-  let width, height, radius, longitude = 73, previous, elapsed = 0, terrainStroke, rimStroke;
+  let width, height, radius, longitude = 10, previous, elapsed = 0, terrainStroke, rimStroke;
   // Fixed seed keeps the sparse star field stable across frames and resizing.
   let seed = 41;
   const random = () => ((seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296);
@@ -161,7 +169,7 @@ export function mountGlobe(canvas, data, initialProfile, initialGalaxy = 'androm
     ctx.globalAlpha = 0.75;
     // These are the globe's live viewing coordinates, not a personal location.
     const lon = ((longitude + 540) % 360) - 180;
-    const view = `12.0°N / ${Math.abs(lon).toFixed(1)}°${lon < 0 ? 'W' : 'E'}`;
+    const view = `${latitude.toFixed(1)}°N / ${Math.abs(lon).toFixed(1)}°${lon < 0 ? 'W' : 'E'}`;
     ctx.textAlign = 'right'; ctx.fillStyle = '#657179';
     ctx.fillText(view, width - pad, y);
     ctx.restore();
@@ -170,7 +178,7 @@ export function mountGlobe(canvas, data, initialProfile, initialGalaxy = 'androm
     if (disposed) return;
     ctx.clearRect(0, 0, width, height);
     drawCornerDetails();
-    projection.rotate([-longitude, -12, -12]);
+    projection.rotate([-longitude, -latitude, -12]);
     drawSky();
     // Paint the name behind the opaque sphere for true curved-horizon occlusion.
     drawHorizonName();
@@ -249,6 +257,13 @@ export function mountGlobe(canvas, data, initialProfile, initialGalaxy = 'androm
     ctx.beginPath(); path(coastlines); ctx.stroke();
     ctx.globalAlpha = 1;
     ctx.fillStyle = '#d8c498';
+    cityNetwork.draw(elapsed, reduced.matches);
+    ctx.save();
+    ctx.globalAlpha = 0.65;
+    ctx.fillStyle = '#d8c498';
+    ctx.beginPath();
+    path.pointRadius(1)(hubGeometry);
+    ctx.fill(); ctx.restore();
     // Draw smaller cities first so major centers remain distinct in clusters.
     for (const tier of cityTiers) {
       ctx.save();

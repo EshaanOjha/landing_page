@@ -2,14 +2,6 @@
 .galaxy-scene{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 1.6s ease}
 .galaxy-scene.is-visible{opacity:1}
 #orbital-globe canvas{position:relative}
-.galaxy-selector{position:absolute;top:24px;left:28px;z-index:20;display:flex;align-items:center;gap:4px;padding:4px;border:1px solid rgba(141,167,190,.15);border-radius:20px;background:rgba(5,8,14,.7);font:10px 'JetBrains Mono',monospace}
-.galaxy-selector-label{padding:0 8px;color:#74808d;text-transform:uppercase;letter-spacing:.1em}
-.galaxy-selector button{font:inherit;border:0;border-radius:14px;padding:8px 10px;cursor:pointer;color:#8c97a4;background:transparent;transition:color .2s,background .2s;min-height:32px}
-.galaxy-selector button[aria-pressed=true]{color:#e5d6b4;background:rgba(180,193,215,.10)}
-.galaxy-selector button:hover{color:#f5f7f8}
-.galaxy-selector button:focus-visible{outline:2px solid #8dd7e2;outline-offset:2px}
-@media(max-width:760px),(max-height:520px){.galaxy-selector{top:14px;left:20px;font-size:9px}.galaxy-selector-label{display:none}.galaxy-selector button{padding:6px 9px}.galaxy-background{height:36%}}
-@media(prefers-reduced-motion:reduce){.galaxy-scene,.galaxy-selector button{transition:none}}
 
 /* Full-height layer lets the globe itself occlude the galaxy at the horizon. */
 .galaxy-background{height:100%;mask-image:none;-webkit-mask-image:none}
@@ -17,6 +9,5 @@
 .andromeda-scene{overflow:hidden}
 .andromeda-image{position:absolute;left:50%;top:36%;width:180%;max-width:none;height:auto;transform:translate(-50%,-50%) rotate(-75deg);opacity:.40;filter:saturate(.65) brightness(.7);mask-image:radial-gradient(ellipse 35% 49% at 50% 50%,#000 35%,transparent 90%);-webkit-mask-image:radial-gradient(ellipse 35% 49% at 50% 50%,#000 35%,transparent 90%)}
 .andromeda-core{position:absolute;left:50%;top:37%;width:38%;height:25%;transform:translate(-50%,-50%);background:radial-gradient(ellipse,rgba(230,188,113,.12),rgba(120,141,174,.035) 45%,transparent 70%)}
-.galaxy-credit{position:absolute;bottom:12px;right:18px;left:18px;z-index:20;text-align:right;font:9px/1.6 'JetBrains Mono',monospace;color:#929ba4;pointer-events:none}
-.galaxy-credit a{color:inherit;pointer-events:auto;text-decoration:none}.galaxy-credit a:hover{text-decoration:underline}.galaxy-credit a:focus-visible{outline:1px solid #8dd7e2;outline-offset:3px}
-@media(max-width:760px){.andromeda-image{width:240%;top:38%}.galaxy-credit{font-size:8px;bottom:8px;left:12px;right:12px;text-align:center}}
+@media(max-width:760px){.andromeda-image{width:240%;top:38%}}
+@media(prefers-reduced-motion:reduce){.galaxy-scene{transition:none}}

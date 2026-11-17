@@ -91,3 +91,11 @@ https://github.com/stevesong/open_undersea_cable_map/tree/e7903491e73bcac0d0b013
 © TeleGeography. Cable data and derived subset are CC BY-NC-SA 3.0: https://creativecommons.org/licenses/by-nc-sa/3.0/ . Noncommercial reuse only; share adaptations under the same license. This does not claim a license to TeleGeography's current commercial dataset. Source license is included in `public/data/cables/LICENSE.txt`; visible attribution appears in a small footer credit. All routes render together, with soft bidirectional packet trails; reduced-motion preferences disable the flow.
 
 `python3 scripts/build-cables.py` reproducibly selects the five systems and their landing points from the pinned archive, retaining the published MultiLineString geometry. No direct city-to-city substitute lines are generated. These are historical schematic paths, not precise seabed surveys or present operational status. Some published sections cross land at landing approaches and terrestrial links. Animated packets are decorative, not traffic measurements. The layer loads separately so a missing cable dataset does not prevent the globe from rendering.
+
+## Illustrative city network
+
+City connections combine all existing city tiers with Natural Earth's public-domain 1:10m populated places (simple), retrieved 2026-11-17. The additional 1,080 records include all source national/alternate capitals, world cities, and population estimates of at least 500,000. Source classifications and population estimates are historical and may not reflect current capital status or populations.
+
+Source: https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_populated_places_simple.geojson
+
+The subset is stored in `src/globe/cityHubs.json` with names, countries, capital flags and coordinates. Every node connects to its nearest neighbor and a second neighbor within approximately 1,530 km, deduplicating undirected edges. Only duplicate locations within roughly 1 km are merged. Gold trails are illustrative, not actual internet routes or measured traffic. Offscreen packet tracks are culled; both flow layers honor reduced motion and share the existing animation loop.

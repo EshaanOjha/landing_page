@@ -37,3 +37,23 @@ test('archived India routes contain real route geometry and landing metadata', (
     }
   }
 });
+
+test('city network includes every supplied capital and city without duplicate links', async () => {
+  const { createCityRoutes, cityNetworkNodes } = await import('../src/globe/cityNetwork.js');
+  const tiers = JSON.parse(readFileSync(new URL('../public/data/cityTiers.json',import.meta.url)));
+  const hubs = JSON.parse(readFileSync(new URL('../src/globe/cityHubs.json',import.meta.url)));
+  const nodes = cityNetworkNodes(tiers);
+  const routes = createCityRoutes(tiers);
+  assert.ok(nodes.length >= 1080);
+  assert.ok(hubs.filter(h => h.capital).length >= 200);
+  const endpoints = new Set(), edges = new Set();
+  for (const route of routes) {
+    const ends = route.geometry.coordinates[0].map(JSON.stringify);
+    ends.forEach(end => endpoints.add(end));
+    const key = ends.sort().join('|');
+    assert.ok(!edges.has(key)); edges.add(key);
+  }
+  for (const point of nodes) assert.ok(endpoints.has(JSON.stringify(point)));
+  for (const hub of hubs) assert.ok(endpoints.has(JSON.stringify(hub.coordinates)));
+  assert.ok(routes.length <= nodes.length * 2);
+});
