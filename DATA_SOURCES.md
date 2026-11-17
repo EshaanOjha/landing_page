@@ -82,3 +82,12 @@ At the portfolio owner's request, Arunachal Pradesh is displayed within India. N
 - License: CC BY 4.0, https://creativecommons.org/licenses/by/4.0/
 
 The original asset is unchanged. CSS adapts orientation, framing, brightness and saturation, fades its edges, and adds a warm core glow. This is an artistic backdrop, not a physically accurate Earth/Andromeda view. Visible linked credit is shown whenever Andromeda is selected. No extra galaxy particle/starlight layer is added; the existing sparse stars remain.
+
+## Submarine cables
+
+Five India-connected routes (IMEWE, SeaMeWe-4, Europe India Gateway, i2i, Tata Indicom) are derived from TeleGeography's late-2022 Creative Commons snapshot, preserved by Steve Song:
+https://github.com/stevesong/open_undersea_cable_map/tree/e7903491e73bcac0d0b013b945897d10928483c4
+
+© TeleGeography. Cable data and derived subset are CC BY-NC-SA 3.0: https://creativecommons.org/licenses/by-nc-sa/3.0/ . Noncommercial reuse only; share adaptations under the same license. This does not claim a license to TeleGeography's current commercial dataset. Source license is included in `public/data/cables/LICENSE.txt`; visible attribution appears in a small footer credit. All routes render together, with soft bidirectional packet trails; reduced-motion preferences disable the flow.
+
+`python3 scripts/build-cables.py` reproducibly selects the five systems and their landing points from the pinned archive, retaining the published MultiLineString geometry. No direct city-to-city substitute lines are generated. These are historical schematic paths, not precise seabed surveys or present operational status. Some published sections cross land at landing approaches and terrestrial links. Animated packets are decorative, not traffic measurements. The layer loads separately so a missing cable dataset does not prevent the globe from rendering.

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import '../styles/cables.css';
 import GalaxyBackground from './GalaxyBackground.jsx';
 import { loadGlobeData } from '../globe/loadData.js';
 
@@ -9,7 +10,16 @@ export default function Globe({ profile, galaxy = 'milky-way' }) {
   const galaxyRef = useRef(galaxy);
   const [status, setStatus] = useState('loading');
   const [attempt, setAttempt] = useState(0);
-
+  const routesRef = useRef([]);
+  const [hasCables, setHasCables] = useState(false);
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch('/data/cables/routes.json', { signal: controller.signal })
+      .then(response => { if (!response.ok) throw new Error('Cable data unavailable'); return response.json(); })
+      .then(routes => { routesRef.current = routes; setHasCables(true); rendererRef.current?.setCables(routes); })
+      .catch(error => { if (error.name !== 'AbortError') console.warn('Cable routes unavailable:', error); });
+    return () => controller.abort();
+  }, []);
   useEffect(() => {
     profileRef.current = profile;
     rendererRef.current?.updateProfile(profile);
@@ -28,6 +38,7 @@ export default function Globe({ profile, galaxy = 'milky-way' }) {
         if (cancelled) return;
         instance = mountGlobe(canvasRef.current, data, profileRef.current, galaxyRef.current);
         rendererRef.current = instance;
+        if (routesRef.current.length) instance.setCables(routesRef.current);
         setStatus('ready');
       })
       .catch(error => {
@@ -46,7 +57,8 @@ export default function Globe({ profile, galaxy = 'milky-way' }) {
   return (
     <div id="orbital-globe">
       <GalaxyBackground galaxy={galaxy} />
-      <canvas ref={canvasRef} role="img" aria-label={`${profile.firstName} ${profile.lastName} floating behind a rotating globe with borders, rivers, lakes, terrain and urban clusters.`} />
+      <canvas ref={canvasRef} role="img" aria-label={`${profile.firstName} ${profile.lastName} floating behind a rotating globe with borders, rivers, lakes, terrain, urban clusters and flowing submarine cable packets.`} />
+      {hasCables && <small className="cable-attribution">2022 schematic cables · <a href="https://github.com/stevesong/open_undersea_cable_map" target="_blank" rel="noreferrer">© TeleGeography</a> · <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank" rel="noreferrer">CC BY-NC-SA 3.0</a> · Illustrative flow</small>}
       {status === 'loading' && <span className="sr-only" role="status">Loading globe</span>}
       {status === 'error' && <div className="globe-error" role="alert">
         <p>The globe could not load.</p>

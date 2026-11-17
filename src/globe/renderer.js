@@ -1,4 +1,5 @@
 import * as d3 from 'd3-geo';
+import { createCableLayer } from './cables.js';
 import { geoSatellite } from 'd3-geo-projection';
 import { mesh, merge } from 'topojson-client';
 
@@ -32,6 +33,7 @@ export function mountGlobe(canvas, data, initialProfile, initialGalaxy = 'androm
   const projection = geoSatellite().distance(distance)
     .clipAngle(Math.acos(1 / distance) * 180 / Math.PI - 0.001).precision(0.35);
   const path = d3.geoPath(projection, ctx);
+  let cableLayer = null;
   const reduced = media('(prefers-reduced-motion: reduce)');
   let width, height, radius, longitude = 73, previous, elapsed = 0, terrainStroke, rimStroke;
   // Fixed seed keeps the sparse star field stable across frames and resizing.
@@ -46,11 +48,6 @@ export function mountGlobe(canvas, data, initialProfile, initialGalaxy = 'androm
     period: 8000 + random() * 6000,
     twinkle: i % 13 === 0,
   }));
-  // Decorative constellation patterns, not an astronomical sky chart.
-  const constellations = [
-    { x: 0.16, y: 0.12, points: [[-0.5,0.1],[-0.25,-0.18],[0,0.05],[0.24,-0.25],[0.48,0.02]], edges: [[0,1],[1,2],[2,3],[3,4]] },
-    { x: 0.79, y: 0.16, points: [[-0.5,-0.22],[-0.2,-0.12],[0.05,0.13],[0.4,0.04],[0.32,-0.26]], edges: [[0,1],[1,2],[2,3],[3,4],[4,1]] },
-  ];
   function drawSky() {
     ctx.save();
     ctx.fillStyle = '#e7e3d8';
@@ -62,23 +59,6 @@ export function mountGlobe(canvas, data, initialProfile, initialGalaxy = 'androm
         ? 0.82 + 0.18 * Math.sin(elapsed / star.period * Math.PI * 2 + star.phase) : 1;
       ctx.globalAlpha = star.alpha * quiet * shimmer;
       ctx.beginPath(); ctx.arc(star.x * width, star.y * height, star.size, 0, Math.PI * 2); ctx.fill();
-    }
-    const span = Math.min(width * 0.19, height * 0.22, 200);
-    ctx.strokeStyle = '#7a949f';
-    ctx.lineWidth = 0.65;
-    for (const constellation of constellations) {
-      const points = constellation.points.map(([x, y]) =>
-        [constellation.x * width + x * span, constellation.y * height + y * span]);
-      ctx.globalAlpha = 0.18;
-      ctx.beginPath();
-      for (const [a, b] of constellation.edges) {
-        ctx.moveTo(...points[a]); ctx.lineTo(...points[b]);
-      }
-      ctx.stroke();
-      ctx.globalAlpha = 0.55;
-      for (const [x, y] of points) {
-        ctx.beginPath(); ctx.arc(x, y, 0.95, 0, Math.PI * 2); ctx.fill();
-      }
     }
     ctx.restore();
   }
@@ -286,6 +266,7 @@ export function mountGlobe(canvas, data, initialProfile, initialGalaxy = 'androm
         ctx.fill(); ctx.restore();
       });
     }
+    if (cableLayer) cableLayer.draw(elapsed, reduced.matches);
   }
   function resize() {
     width = root.clientWidth; height = root.clientHeight;
@@ -328,6 +309,7 @@ export function mountGlobe(canvas, data, initialProfile, initialGalaxy = 'androm
   reduced.addEventListener('change', draw);
   resize(); frameId = requestAnimationFrame(animate);
   return {
+    setCables(routes) { cableLayer = createCableLayer(ctx, projection, routes); draw(); },
     updateGalaxy(next) { galaxy = next; draw(); },
     updateProfile(next) { profile = next; draw(); },
     dispose() {

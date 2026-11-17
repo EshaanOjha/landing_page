@@ -1,0 +1,75 @@
+import { geoStream, geoDistance, geoInterpolate } from 'd3-geo';
+
+// Precompute distance tables and interpolators once; reuse the globe's animation loop.
+function makeTrack(line) {
+  const lengths = [0];
+  const interpolate = [];
+  for (let i = 1; i < line.length; i++) {
+    lengths.push(lengths[i - 1] + geoDistance(line[i - 1], line[i]));
+    interpolate.push(geoInterpolate(line[i - 1], line[i]));
+  }
+  return fraction => {
+    const target = fraction * lengths.at(-1);
+    let low = 1, high = lengths.length - 1;
+    while (low < high) {
+      const mid = (low + high) >> 1;
+      if (lengths[mid] < target) low = mid + 1;
+      else high = mid;
+    }
+    const span = lengths[low] - lengths[low - 1];
+    return interpolate[low - 1](span ? (target - lengths[low - 1]) / span : 0);
+  };
+}
+
+export function createCableLayer(ctx, projection, routes) {
+  const tracks = routes.flatMap(route => route.geometry.coordinates
+    .filter(line => line.length > 1).map(makeTrack));
+  const sink = {
+    lineStart() { this.started = false; }, lineEnd() {},
+    point(x, y) {
+      if (this.started) ctx.lineTo(x, y);
+      else ctx.moveTo(x, y);
+      this.started = true;
+    }, polygonStart() {}, polygonEnd() {}, sphere() {},
+  };
+  function stroke(geometry) {
+    ctx.beginPath();
+    geoStream(geometry, projection.stream(sink));
+    ctx.stroke();
+  }
+  function draw(elapsed, reduced) {
+    ctx.save();
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.strokeStyle = '#52868e';
+    ctx.globalAlpha = 0.48;
+    ctx.lineWidth = 0.8;
+    for (const route of routes) stroke(route.geometry);
+    ctx.globalAlpha = 0.65;
+    for (const route of routes) for (const landing of route.landings) {
+      geoStream({ type: 'Point', coordinates: landing.coordinates }, projection.stream({
+        point(x, y) { ctx.beginPath(); ctx.arc(x, y, 2.2, 0, Math.PI * 2); ctx.stroke(); },
+      }));
+    }
+    if (!reduced) tracks.forEach((pointAt, index) => {
+      // Two offset streams in each direction. Tails fade into the route and
+      // fade out at landings, never jumping across disconnected route sections.
+      for (const direction of [-1, 1]) for (let packet = 0; packet < 2; packet++) {
+        const phase = (elapsed / 24000 + index * 0.173 + packet * 0.5 + (direction < 0 ? 0.23 : 0)) % 1;
+        const head = direction > 0 ? phase : 1 - phase;
+        for (let tail = 0; tail < 10; tail++) {
+          const start = head - direction * tail * 0.004;
+          const end = head - direction * (tail + 1) * 0.004;
+          if (start < 0 || start > 1 || end < 0 || end > 1) continue;
+          const fade = Math.min(1, phase / 0.04, (1 - phase) / 0.04);
+          ctx.globalAlpha = 0.8 * (1 - tail / 10) ** 2 * fade;
+          ctx.strokeStyle = direction > 0 ? '#b5e7e9' : '#75b9d0';
+          ctx.lineWidth = 1.7;
+          stroke({ type: 'LineString', coordinates: [pointAt(end), pointAt(start)] });
+        }
+      }
+    });
+    ctx.restore();
+  }
+  return { draw };
+}

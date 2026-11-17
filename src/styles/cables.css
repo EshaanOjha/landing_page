@@ -1,0 +1,2 @@
+.cable-attribution{position:absolute;z-index:20;left:24px;bottom:30px;max-width:calc(100% - 48px);color:#788b91;font:8px/1.5 'JetBrains Mono',monospace}.cable-attribution a{color:inherit}.cable-attribution a:focus-visible{outline:1px solid #8dd7e2;outline-offset:3px}
+@media(max-width:760px){.cable-attribution{left:12px;bottom:50px;max-width:calc(100% - 24px);font-size:7px}}
