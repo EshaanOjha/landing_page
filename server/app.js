@@ -4,6 +4,14 @@ import path from 'node:path';
 export function createApp(repository, staticDirectory) {
   const app = express();
   app.disable('x-powered-by');
+
+    app.use((req, res, next) => {
+    console.log(
+      `${req.socket.remoteAddress} ${req.method} ${req.originalUrl}`
+    );
+    next();
+  });
+
   app.use(helmet({ contentSecurityPolicy: { directives: {
     defaultSrc: ["'self'"], scriptSrc: ["'self'"], styleSrc: ["'self'", "'unsafe-inline'"],
     fontSrc: ["'self'"], connectSrc: ["'self'"], imgSrc: ["'self'", 'data:'],
