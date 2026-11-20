@@ -3,7 +3,7 @@ import { drawHorizonName } from '../globe/horizonName.js';
 import GalaxyBackground from './GalaxyBackground.jsx';
 import { loadGlobeData } from '../globe/loadData.js';
 
-export default function Globe({ profile, galaxy = 'milky-way', onPhase }) {
+export default function Globe({ profile, galaxy = 'milky-way', onPhase, entranceEnabled = true }) {
   const canvasRef = useRef(null);
   const rendererRef = useRef(null);
   const profileRef = useRef(profile);
@@ -23,7 +23,7 @@ export default function Globe({ profile, galaxy = 'milky-way', onPhase }) {
   useEffect(() => {
     let cancelled = false;
     let instance;
-    onPhase?.('loading');
+    onPhase?.(entranceEnabled ? 'loading' : 'ready');
     // Draw the loading name on the same canvas with the same layout and clock.
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
@@ -51,15 +51,17 @@ export default function Globe({ profile, galaxy = 'milky-way', onPhase }) {
       previewStopped = true;
       cancelAnimationFrame(nameFrame);
     }
-    paintName();
-    nameFrame = requestAnimationFrame(previewName);
+    if (entranceEnabled) {
+      paintName();
+      nameFrame = requestAnimationFrame(previewName);
+    }
     // Keep the name alone on screen even when assets are cached.
     let holdTimer;
     const nameHold = new Promise(resolve => {
-      holdTimer = setTimeout(resolve, window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 500);
+      holdTimer = setTimeout(resolve, !entranceEnabled || window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 500);
     });
     const image = new Image();
-    image.src = '/images/andromeda.jpg';
+    if (galaxyRef.current === 'andromeda') image.src = '/images/andromeda.jpg';
     const imageReady = galaxyRef.current === 'andromeda' ? image.decode().catch(() => {}) : Promise.resolve();
     const fontsReady = Promise.all([
       document.fonts.load('200 100px "Outfit"'), document.fonts.load('400 12px "JetBrains Mono"'),
@@ -72,10 +74,10 @@ export default function Globe({ profile, galaxy = 'milky-way', onPhase }) {
       .then(([data, { mountGlobe }, routes]) => {
         if (cancelled) return;
         stopPreview();
-        instance = mountGlobe(canvasRef.current, data, profileRef.current, galaxyRef.current, { enabled: true, initialElapsed: nameElapsed, onComplete: () => { if (!cancelled) onPhase?.('ready'); } });
+        instance = mountGlobe(canvasRef.current, data, profileRef.current, galaxyRef.current, { enabled: entranceEnabled, initialElapsed: nameElapsed, onComplete: () => { if (!cancelled) onPhase?.('ready'); } });
         rendererRef.current = instance;
         instance.setCables(routes);
-        onPhase?.('entering');
+        onPhase?.(entranceEnabled ? 'entering' : 'ready');
         setStatus('ready');
       })
       .catch(error => {
@@ -93,7 +95,7 @@ export default function Globe({ profile, galaxy = 'milky-way', onPhase }) {
       instance?.dispose();
       if (rendererRef.current === instance) rendererRef.current = null;
     };
-  }, [attempt, onPhase]);
+  }, [attempt, onPhase, entranceEnabled]);
 
   return (
     <div id="orbital-globe">

@@ -1,9 +1,10 @@
 // Canvas drawing adapted from the supplied network-topology (1).html.
-export function mountNetwork(canvas) {
+export function mountNetwork(canvas, { variant = 'page' } = {}) {
+  const space = variant === 'space';
   const ctx = canvas.getContext('2d');
   if (!ctx) return () => {};
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-  let width = 0, height = 0, nodes = [], pulses = [];
+  let width = 0, height = 0, nodeHeight = 0, nodes = [], pulses = [];
   let elapsed = 0, lastTime = 0, frame = 0, disposed = false;
   const influence = 1;
   let pointer = { x: -999, y: -999 }, cursorX = 0.5, paint = '#72e5ec';
@@ -11,20 +12,21 @@ export function mountNetwork(canvas) {
   const distance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
   function resize() {
     width = window.innerWidth; height = window.innerHeight;
+    nodeHeight = space ? height * 0.68 : height;
     const scale = Math.min(window.devicePixelRatio || 1, 2);
     canvas.width = Math.round(width * scale); canvas.height = Math.round(height * scale);
     ctx.setTransform(scale, 0, 0, scale, 0, 0);
     pulses = [];
-    nodes = Array.from({ length: 65 }, (_, i) => ({
-      x: random(10, Math.max(11, width - 10)), y: random(10, Math.max(11, height - 10)),
-      vx: random(-0.13, 0.13), vy: random(-0.13, 0.13), radius: random(1, 3), phase: i * 0.13,
+    nodes = Array.from({ length: space ? Math.min(90, Math.max(42, Math.round(width / 17))) : 65 }, (_, i) => ({
+      x: random(10, Math.max(11, width - 10)), y: random(10, Math.max(11, nodeHeight - 10)),
+      vx: random(-0.13, 0.13) * (space ? 0.4 : 1), vy: random(-0.13, 0.13) * (space ? 0.4 : 1), radius: space ? random(0.6, 1.7) : random(1, 3), phase: i * 0.13,
     }));
     draw();
   }
       function line(a, b, opacity) {
         ctx.globalAlpha = opacity;
         ctx.strokeStyle = paint;
-        ctx.lineWidth = 1;
+        ctx.lineWidth = space ? 0.65 : 1;
         ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
         ctx.globalAlpha = 1;
       }
@@ -37,11 +39,11 @@ export function mountNetwork(canvas) {
       }
 
       function draw() {
-        paint = `hsl(${(elapsed / 6000 * 360 + cursorX * 180) % 360} 85% 65%)`;
+        paint = space ? '#a7c8df' : `hsl(${(elapsed / 6000 * 360 + cursorX * 180) % 360} 85% 65%)`;
         ctx.clearRect(0, 0, width, height);
         const glow = ctx.createRadialGradient(width * 0.55, height * 0.5, 0,
           width * 0.55, height * 0.5, width * 0.7);
-        glow.addColorStop(0, '#72e5ec0b'); glow.addColorStop(1, '#72e5ec00');
+        glow.addColorStop(0, space ? '#759ac60b' : '#72e5ec0b'); glow.addColorStop(1, '#72e5ec00');
         ctx.fillStyle = glow; ctx.fillRect(0, 0, width, height);
 
         // Nearby nodes connect. Hovering brightens connections around the cursor.
@@ -49,14 +51,14 @@ export function mountNetwork(canvas) {
           const a = nodes[i];
           for (let j = i + 1; j < nodes.length; j++) {
             const b = nodes[j];
-            if (distance(a, b) >= 155 * influence) continue;
+            if (distance(a, b) >= (space ? 180 : 155) * influence) continue;
             const active = Math.min(distance(a, pointer), distance(b, pointer)) < 150;
-            line(a, b, active ? 0.85 : 0.12);
-            const progress = (elapsed * 0.0002 + a.phase + j * 0.07) % 1;
+            line(a, b, space ? (active ? 0.3 : 0.09) : (active ? 0.85 : 0.12));
+            const progress = (elapsed * (space ? 0.000065 : 0.0002) + a.phase + j * 0.07) % 1;
             dot(a.x + (b.x - a.x) * progress, a.y + (b.y - a.y) * progress,
-              1.5, active ? 0.9 : 0.25);
+              space ? 1 : 1.5, space ? (active ? 0.65 : 0.28) : (active ? 0.9 : 0.25));
           }
-          dot(a.x, a.y, a.radius, 0.65);
+          dot(a.x, a.y, a.radius, space ? 0.42 + Math.sin(elapsed / 2600 + a.phase) * 0.12 : 0.65);
         }
 
         // Clicks add connections and launch bright packets from the nearest node.
@@ -84,7 +86,7 @@ export function mountNetwork(canvas) {
     for (const node of nodes) {
       node.x += node.vx * delta / 16.667; node.y += node.vy * delta / 16.667;
       if (node.x < 10 || node.x > width - 10) node.vx *= -1;
-      if (node.y < 10 || node.y > height - 10) node.vy *= -1;
+      if (node.y < 10 || node.y > nodeHeight - 10) node.vy *= -1;
     }
     draw();
     frame = requestAnimationFrame(animate);
@@ -102,6 +104,7 @@ export function mountNetwork(canvas) {
   function leave() { pointer = { x: -999, y: -999 }; }
   function click(event) {
     if (reduced.matches || event.target.closest?.('a, button, input, select, textarea, summary')) return;
+    if (space && event.clientY > nodeHeight) return;
     pulses.push({ x: event.clientX, y: event.clientY, time: elapsed });
     // Bound work even during rapid clicking.
     pulses = pulses.slice(-8);

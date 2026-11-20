@@ -11,3 +11,6 @@
 .andromeda-core{position:absolute;left:50%;top:37%;width:38%;height:25%;transform:translate(-50%,-50%);background:radial-gradient(ellipse,rgba(230,188,113,.12),rgba(120,141,174,.035) 45%,transparent 70%)}
 @media(max-width:760px){.andromeda-image{width:240%;top:38%}}
 @media(prefers-reduced-motion:reduce){.galaxy-scene{transition:none}}
+
+.network-space{background:radial-gradient(ellipse at 50% 28%,rgba(31,48,70,.12),transparent 65%)}
+.network-space canvas{width:100%;height:100%;display:block}

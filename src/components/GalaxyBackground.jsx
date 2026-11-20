@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react';
+import { mountNetwork } from '../background/network.js';
 import '../styles/galaxy.css';
 
 // Decorative, seeded galaxy impressions rather than an astronomical sky chart.
@@ -8,7 +10,16 @@ const dust = Array.from({ length: 220 }, (_, i) => {
   return { x, y: (noise(i + 701) + noise(i + 401) - 1), r: 0.35 + noise(i + 201) * 0.8 };
 });
 
+function NetworkSpace() {
+  const canvas = useRef(null);
+  useEffect(() => mountNetwork(canvas.current, { variant: 'space' }), []);
+  return <div className="galaxy-background network-space" aria-hidden="true">
+    <canvas ref={canvas} />
+  </div>;
+}
+
 export default function GalaxyBackground({ galaxy }) {
+  if (galaxy === 'network-space') return <NetworkSpace />;
   return <div className="galaxy-background" aria-hidden="true">
     <svg className={`galaxy-scene${galaxy === 'milky-way' ? ' is-visible' : ''}`} viewBox="0 0 1000 400" preserveAspectRatio="xMidYMid slice">
       <defs>

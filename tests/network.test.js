@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { mountNetwork } from '../src/background/network.js';
 
-test('network pauses for hidden tabs and reduced motion, and cleans up on remount', () => {
+for (const variant of ['page', 'space']) test(`${variant} network pauses for hidden tabs and reduced motion, and cleans up on remount`, () => {
   const originals = Object.fromEntries(['window','document','requestAnimationFrame','cancelAnimationFrame'].map(key => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
   const win = new EventTarget(), doc = new EventTarget(), reduced = new EventTarget();
   const frames = new Map(); let next = 0, draws = 0;
@@ -12,7 +12,7 @@ test('network pauses for hidden tabs and reduced motion, and cleans up on remoun
   Object.assign(globalThis, { window: win, document: doc, requestAnimationFrame: callback => { frames.set(++next,callback); return next; }, cancelAnimationFrame: id => frames.delete(id) });
   const canvas = { getContext: () => ctx };
   try {
-    const dispose = mountNetwork(canvas);
+    const dispose = mountNetwork(canvas, { variant });
     assert.equal(canvas.width, 1600); assert.equal(frames.size, 1);
     doc.hidden = true; doc.dispatchEvent(new Event('visibilitychange')); assert.equal(frames.size, 0);
     doc.hidden = false; doc.dispatchEvent(new Event('visibilitychange')); assert.equal(frames.size, 1);
@@ -21,7 +21,7 @@ test('network pauses for hidden tabs and reduced motion, and cleans up on remoun
     dispose(); assert.equal(frames.size, 0);
     const count = draws; win.dispatchEvent(new Event('resize')); reduced.dispatchEvent(new Event('change'));
     assert.equal(draws, count); assert.equal(frames.size, 0);
-    const disposeAgain = mountNetwork(canvas); assert.equal(frames.size, 1); disposeAgain(); assert.equal(frames.size, 0);
+    const disposeAgain = mountNetwork(canvas, { variant }); assert.equal(frames.size, 1); disposeAgain(); assert.equal(frames.size, 0);
   } finally {
     for (const [key, descriptor] of Object.entries(originals)) {
       if (descriptor) Object.defineProperty(globalThis,key,descriptor); else delete globalThis[key];
