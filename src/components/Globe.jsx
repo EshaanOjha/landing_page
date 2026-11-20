@@ -3,11 +3,16 @@ import { drawHorizonName } from '../globe/horizonName.js';
 import GalaxyBackground from './GalaxyBackground.jsx';
 import { loadGlobeData } from '../globe/loadData.js';
 
-export default function Globe({ profile, galaxy = 'milky-way', onPhase, entranceEnabled = true }) {
+export default function Globe({ profile, galaxy = 'milky-way', onPhase, entranceEnabled = true, hideName = false }) {
   const canvasRef = useRef(null);
   const rendererRef = useRef(null);
   const profileRef = useRef(profile);
   const galaxyRef = useRef(galaxy);
+  const hideNameRef = useRef(hideName);
+  useEffect(() => {
+    hideNameRef.current = hideName;
+    rendererRef.current?.setNameHidden(hideName);
+  }, [hideName]);
   const [status, setStatus] = useState('loading');
   const [attempt, setAttempt] = useState(0);
   useEffect(() => {
@@ -38,7 +43,7 @@ export default function Globe({ profile, galaxy = 'milky-way', onPhase, entrance
       }
       ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
       ctx.clearRect(0, 0, width, height);
-      drawHorizonName(ctx, width, height, Math.max(width * 1.3, height * 0.7), profileRef.current, nameElapsed, reduced);
+      drawHorizonName(ctx, width, height, Math.max(width * 1.3, height * 0.7), profileRef.current, nameElapsed, reduced, hideNameRef.current ? 1 : 0);
     }
     function previewName(now) {
       if (previewStopped) return;
@@ -74,7 +79,7 @@ export default function Globe({ profile, galaxy = 'milky-way', onPhase, entrance
       .then(([data, { mountGlobe }, routes]) => {
         if (cancelled) return;
         stopPreview();
-        instance = mountGlobe(canvasRef.current, data, profileRef.current, galaxyRef.current, { enabled: entranceEnabled, initialElapsed: nameElapsed, onComplete: () => { if (!cancelled) onPhase?.('ready'); } });
+        instance = mountGlobe(canvasRef.current, data, profileRef.current, galaxyRef.current, { enabled: entranceEnabled, sinkName: hideNameRef.current, initialElapsed: nameElapsed, onComplete: () => { if (!cancelled) onPhase?.('ready'); } });
         rendererRef.current = instance;
         instance.setCables(routes);
         onPhase?.(entranceEnabled ? 'entering' : 'ready');

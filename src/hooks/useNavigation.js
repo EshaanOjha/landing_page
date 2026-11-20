@@ -12,10 +12,13 @@ export function useNavigation() {
       setHovered(null);
       setFocused(null);
     };
+    const onRoute = () => { onHash(); onBlur(); };
+    window.addEventListener('popstate', onRoute);
     window.addEventListener('hashchange', onHash);
     window.addEventListener('blur', onBlur);
     return () => {
       clearTimeout(leaveTimer.current);
+      window.removeEventListener('popstate', onRoute);
       window.removeEventListener('hashchange', onHash);
       window.removeEventListener('blur', onBlur);
     };

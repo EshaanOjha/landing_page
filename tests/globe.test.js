@@ -22,6 +22,9 @@ test('real geographic layers render, profile updates, and unmount cancels animat
     drawHorizonName(ctx, 1280, 720, 1280 * 1.3, defaultPortfolio, 1500, reduced);
     const previewPositions = namePositions;
     namePositions = [];
+    drawHorizonName(ctx, 1280, 720, 1280 * 1.3, defaultPortfolio, 1500, reduced, 1);
+    assert.equal(namePositions.length, 0, 'fully lowered name no longer draws over secondary pages');
+    namePositions = [];
     let completed = 0;
     const renderer = mountGlobe(canvas, data, defaultPortfolio, 'andromeda', { enabled: true, initialElapsed: 1500, onComplete: () => completed++ });
     assert.deepEqual(namePositions, previewPositions, 'loading and globe names have identical positions and hover phase');

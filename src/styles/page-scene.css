@@ -4,3 +4,5 @@
 .page-scene-content>.about-page{position:relative;background:transparent;padding-bottom:38px}
 .page-scene>.globe-credits{position:fixed;z-index:2;bottom:8px;padding:3px 6px;background:rgba(4,6,9,.75);border-radius:3px}
 @media(max-width:760px){.page-scene-content{background:rgba(4,6,9,.81)}.page-scene>.globe-credits{font-size:7px;max-width:calc(100% - 24px)}}
+
+.site-scene{height:100%;background:#000}.home-scene-background{position:fixed;inset:0}

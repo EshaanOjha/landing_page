@@ -13,6 +13,7 @@ export function mountGlobe(canvas, data, initialProfile, initialGalaxy = 'androm
   let galaxy = initialGalaxy;
   let disposed = false;
   let entranceTime = entrance.enabled ? 0 : 2600;
+  let nameHidden = !!entrance.sinkName;
   let entranceComplete = !entrance.enabled;
   let frameId;
   const media = window.matchMedia.bind(window);
@@ -101,7 +102,7 @@ export function mountGlobe(canvas, data, initialProfile, initialGalaxy = 'androm
     drawSky();
     ctx.restore();
     // Paint the name behind the opaque sphere for true curved-horizon occlusion.
-    drawHorizonName(ctx, width, height, radius, profile, elapsed, reduced);
+    drawHorizonName(ctx, width, height, radius, profile, elapsed, reduced, nameHidden ? 1 : 0);
     ctx.save();
     const progress = reduced.matches ? 1 : Math.min(1, entranceTime / 2600);
     ctx.translate(0, (1 - progress) ** 3 * height * 0.65);
@@ -258,6 +259,7 @@ export function mountGlobe(canvas, data, initialProfile, initialGalaxy = 'androm
   return {
     setCables(routes) { cableLayer = createCableLayer(ctx, projection, routes); draw(); },
     updateGalaxy(next) { galaxy = next; draw(); },
+    setNameHidden(hidden) { nameHidden = hidden; draw(); },
     updateProfile(next) { profile = next; draw(); },
     dispose() {
       disposed = true;

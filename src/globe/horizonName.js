@@ -1,6 +1,7 @@
 // Shared by the lightweight loading canvas and the full globe renderer.
 // Identical font metrics, baseline and animation time prevent a handoff jump.
-export function drawHorizonName(ctx, width, height, radius, profile, elapsed, reduced) {
+export function drawHorizonName(ctx, width, height, radius, profile, elapsed, reduced, sink = 0) {
+  if (sink >= 1) return;
   function trackedWidth(label, tracking) {
     return Array.from(label).reduce((sum, char) => sum + ctx.measureText(char).width, 0)
       + Math.max(0, Array.from(label).length - 1) * tracking;
@@ -26,6 +27,8 @@ export function drawHorizonName(ctx, width, height, radius, profile, elapsed, re
     let metrics = measureName();
     fontSize *= Math.min(1, width * 0.80 / metrics.total);
     metrics = measureName();
+    // The opaque globe naturally covers the descending name and its glow.
+    ctx.translate(0, fontSize * 2.4 * sink);
     const startX = (width - metrics.total) / 2;
     const floatAmplitude = Math.min(7, Math.max(2, fontSize * 0.045));
     // Let the j dip behind the horizon, then clear it at the top of each hover.
